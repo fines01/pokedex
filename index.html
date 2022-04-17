@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font awesome ? -->
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Javascript -->
+    <script src="script.js"></script>
+    <script src="api-data.js"></script>
+    <script src="templates.js"></script>
+
+    <title>Pokedex</title>
+
+
+</head>
+
+<body onload="init()">
+
+    <div class="main-content">
+
+        <nav>
+            <div class="nav-content">
+                <span>PokeDex</span>
+            </div>
+            <div class="nav-content">
+                <input type="text" placeholder="search pokemon...">
+            </div>
+            <div class="nav-content">
+                <a href="#">Favs</a>
+                <a href="#">Sort</a>
+                <a href="#">OtherLink</a>
+            </div>
+        </nav>
+
+        <!-- modal -->
+        <div id="modal-overlay" class="d-none" onclick="toggleOverlay()"></div>
+        <!-- END: modal -->
+
+        <!-- pokemon cards -->
+        <div id="cards-container"></div>
+        <!-- END pokemon-cards -->
+
+        <div id="pagination-links">
+            <!-- <button onclick="loadPrevious()">
+                < prev.
+            </button> |
+             <button onclick="lazyLoadAll()">
+                SHOW ALL
+            </button> |
+            <button onclick="loadNext()">
+                next >
+            </button> -->
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <a href="#">Impressum</a>
+            <a href="#">Datenschutz</a>
+        </div>
+        <div class="footer-content">
+            &copy; FI 2022
+        </div>
+    </footer>
+
+
+</body>
+
+</html>
