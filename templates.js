@@ -1,6 +1,8 @@
 function cardTemplate(element, pokemon) {
     element.innerHTML += /*html*/ `
-        <div class="pokemon-card" onclick="toggleOverlay();renderDetailCard('${pokemon.name}')">
+        <div class="pokemon-card" onclick="toggleOverlay();renderDetailCard('${pokemon.name}')"  style="border: 1px solid var(--col-${pokemon.types[0]})"
+        onmouseover="this.style.backgroundColor='var(--col-${pokemon.types[0]})'" onmouseout="this.style.backgroundColor='rgb(255, 255, 255, 0.5)'">
+            <!-- <div class="col-overlay" style="background-color: var(--col-${pokemon.types[0]})"></div> -->
             <!-- show id for TESTING purposes -->
             <span>${pokemon.id}</span>
             <h2 class="pokemon-name">${pokemon.name}</h2>
@@ -9,7 +11,6 @@ function cardTemplate(element, pokemon) {
                 <div id="types">
                     <!-- get and render all types -->
                     ${typesTemplate(pokemon.types)}
-                    <!-- <p>${pokemon.types[0]}</p> -->
                 </div>
         </div>
     `;
@@ -25,11 +26,11 @@ function detailCardTemplate(element, pokemon) {
                     <h3>Type:</h3>
                     <!-- render Types  -->
                     <div id="types">
-                         <!-- <p>${pokemon.types[0]}</p> -->
+                        <!-- <p>${pokemon.types[0]}</p> -->
                         ${typesTemplate(pokemon.types)}
                     </div>
                 </div>
-                    <!-- <span class="shadow"> -->
+                <!-- <span class="shadow"> -->
                 <div class="img-box">
                     <img id="poke-img" src="${pokemon.imgSrc}" alt="pokemon image">
                 </div>
@@ -54,7 +55,7 @@ function typesTemplate(types) {
 
 function paginationLinksTemplate(element) {
     element.innerHTML = /*html*/ `
-         <button onclick="loadPrevious()">
+        <button onclick="loadPrevious()">
             &#10096; prev. ${limit}
         </button> |
         <button onclick="lazyLoadAll()">
