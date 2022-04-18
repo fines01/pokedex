@@ -4,7 +4,7 @@ function cardTemplate(element, pokemon) {
         onmouseover="this.style.backgroundColor='var(--col-${pokemon.types[0]})'" onmouseout="this.style.backgroundColor='rgb(255, 255, 255, 0.5)'">
             <!-- <div class="col-overlay" style="background-color: var(--col-${pokemon.types[0]})"></div> -->
             <!-- show id for TESTING purposes -->
-            <span>${pokemon.id}</span>
+            <span class="poke-id">${pokemon.id}</span>
             <h2 class="pokemon-name">${pokemon.name}</h2>
             <img class="card-img" src="${pokemon.imgSrc}" alt="Pokemon image">
             <h3>Type:</h3>
@@ -65,4 +65,8 @@ function paginationLinksTemplate(element) {
             next ${limit} &#10095;
         </button>
     `;
+}
+
+function backBtnTemplate(element) {
+    element.innerHTML = /*html*/ ` <button onclick="goBack()">Go Back</button>`;
 }
