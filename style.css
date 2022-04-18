@@ -1,22 +1,22 @@
 :root {
-    --col-bug: brown;
-    --col-normal: aliceblue;
-    --col-water: blue;
-    --col-fire: red;
-    --col-grass: lime;
-    --col-electric: yellow;
-    --col-poison: green;
-    --col-ground: brown;
-    --col-fighting: orangered;
-    --col-psychic: white;
-    --col-rock: grey;
-    --col-ghost: darkgrey;
-    --col-ice: aliceblue;
-    --col-fairy: pink;
-    --col-ice: blue;
-    --col-steel: gray;
-    --col-dark: black;
-
+    --col-bug: rgb(168, 184, 32);
+    --col-dark: rgb(167, 43, 43);
+    --col-dragon: rgb(112, 56, 248);
+    --col-electric: rgb(248, 208, 48);
+    --col-fairy: rgb(238, 153, 172);
+    --col-fighting: rgb(192, 48, 40);
+    --col-fire: rgb(240, 128, 48);
+    --col-flying: rgb(0, 206, 209);
+    --col-ghost: rgb(112, 88, 152);
+    --col-grass: rgb(120, 200, 80);
+    --col-ground: rgb(224, 192, 104);
+    --col-ice: rgb(152, 216, 216);
+    --col-normal: rgb(168, 168, 120);
+    --col-poison: rgb(160, 64, 160);
+    --col-psychic: rgb(248, 88, 136);
+    --col-rock: rgb(184, 160, 56);
+    --col-steel: rgb(169, 169, 169);
+    --col-water: rgb(104, 144, 240);
 }
 
 body {
