@@ -1,9 +1,9 @@
 function cardTemplate(element, pokemon) {
     element.innerHTML += /*html*/ `
         <div class="pokemon-card" onclick="toggleOverlay();renderDetailCard('${pokemon.name}')">
-            <h2 class="pokemon-name">${pokemon.name}</h2>
             <!-- show id for TESTING purposes -->
             <span>${pokemon.id}</span>
+            <h2 class="pokemon-name">${pokemon.name}</h2>
             <img class="card-img" src="${pokemon.imgSrc}" alt="Pokemon image">
             <h3>Type:</h3>
                 <div id="types">
@@ -19,16 +19,20 @@ function detailCardTemplate(element, pokemon) {
 
     element.innerHTML = /*html*/ `
         <div id="pokedex" class="" onclick="event.stopPropagation()">
-            <div id="poke-title">
-                <h1 id="pokemon-name">${pokemon.name}</h1>
-                <h3>Type:</h3>
-                <!-- render Types  -->
-                <div id="types">
-                     <!-- <p>${pokemon.types[0]}</p> -->
-                    ${typesTemplate(pokemon.types)}
+            <div id="poke-title" style="background-color: var(--col-${pokemon.types[0]})">
+                <div class="column">
+                    <h1 id="pokemon-name">${pokemon.name}</h1>
+                    <h3>Type:</h3>
+                    <!-- render Types  -->
+                    <div id="types">
+                         <!-- <p>${pokemon.types[0]}</p> -->
+                        ${typesTemplate(pokemon.types)}
+                    </div>
                 </div>
-                <!-- <span class="shadow"> -->
-                <img id="poke-img" src="${pokemon.imgSrc}" alt="pokemon image">
+                    <!-- <span class="shadow"> -->
+                <div class="img-box">
+                    <img id="poke-img" src="${pokemon.imgSrc}" alt="pokemon image">
+                </div>
                 <!-- </span> -->
             </div>
             <div class="poke-info">
