@@ -13,21 +13,16 @@
         rel="stylesheet">
     <!-- stylesheets -->
     <link rel="stylesheet" href="style.css">
-
     <!-- Javascript -->
     <script src="script.js"></script>
     <script src="api-data.js"></script>
     <script src="templates.js"></script>
-
     <title>Pokedex</title>
-
-
 </head>
 
 <body onload="init()">
 
     <div class="main-content">
-
         <nav>
             <div class="nav-content">
                 <span>PokeDex</span>
@@ -41,29 +36,13 @@
                 <a href="#">OtherLink</a>
             </div>
         </nav>
-
         <!-- modal -->
         <div id="modal-overlay" class="d-none" onclick="toggleOverlay()"></div>
-        <!-- END: modal -->
-
         <!-- pokemon cards -->
         <div id="cards-container"></div>
-        <!-- END pokemon-cards -->
-
-        <div id="pagination-links">
-            <!-- <button onclick="loadPrevious()">
-                < prev.
-            </button> |
-             <button onclick="lazyLoadAll()">
-                SHOW ALL
-            </button> |
-            <button onclick="loadNext()">
-                next >
-            </button> -->
-        </div>
-
+        <div id="pagination-links"></div>
     </div>
-
+    <!-- end: main-content -->
     <footer>
         <div class="footer-content">
             <a href="#">Impressum</a>
@@ -73,7 +52,6 @@
             &copy; FI 2022
         </div>
     </footer>
-
 
 </body>
 
