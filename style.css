@@ -83,6 +83,25 @@ nav {
     align-items: center;
     padding: 1rem;
     background-color: white;
+    box-shadow: 0 0px 3px 0px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0px 3px 0px rgba(255,255,255, 0.9);
+    font-weight: bold;
+    color: white;
+    background-color: rgb(0, 0, 0,0.9);
+    border-bottom: 1px solid darkturquoise;
+}
+
+.search-box {
+    border: 1px solid darkturquoise;
+    border-radius: 4px;
+    background-color: rgb(0, 206, 209,0.85);
+}
+.search-box button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+
+    font-weight: bold;
 }
 
 /* *** pokedex card big  *** */
@@ -186,12 +205,19 @@ img {
 .pokemon-card:hover {
     transform: scale(1.05);
     z-index: 1;
-    box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.5);
+    box-shadow: 1px 1px 10px 1.5px rgba(0, 0, 0, 0.6);
     background-color: rgba(255, 255, 255, 0.9);
     /* background-color: var(--col-type); */
 }
 
 /* *** pokemon card *** */
+
+.poke-id {
+    position: absolute;
+    top:0.5rem; left:0.5rem;
+    font-size: 0.8rem;
+    color: gray;
+}
 .pokemon-name {
     text-transform: capitalize;
     /* text-align: center; */
@@ -299,6 +325,8 @@ img {
 .cards-container {
     display: flex;
     justify-content: space-evenly;
+    align-content:center;
+    min-height: 50vh;
     gap: 1rem 0.5rem;
     flex-wrap: wrap;
     margin: 1.5rem;
