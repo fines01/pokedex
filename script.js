@@ -2,19 +2,22 @@ let currentPokemon, pokemonDataSelection = [], pokemons, currentUrl, favourites;
 let endpoint = 'pokemon';
 let limit = 18;
 let apiURL = `https://pokeapi.co/api/v2/${endpoint}?limit=${limit}`;
+let loading = false;
 
-function init() {
-    //renderPaginationLinks();
-    loadPokemons();
-}
+// function init() {
+//     loadPokemons();
+// }
 
 // load Pokemons from API
 async function loadPokemons(url = apiURL) {
-    let response = await fetch(url);
-    pokemons = await response.json(); // [results, next, previous], results: --> [{"name", "url"}]
-    await savePokemonData();
-    renderCards();
-    currentUrl = url; //not another global, meh
+    if (!loading) {
+        loading = true;
+        let response = await fetch(url);
+        pokemons = await response.json(); // [results, next, previous], results: --> [{"name", "url"}]
+        await savePokemonData();
+        renderCards();
+        currentUrl = url; //not another global, meh
+    }    
 }
 
 // load single pokemon
@@ -36,6 +39,7 @@ function extractData() {
         // second back-up
         imgSrc= currentPokemon['sprites']['front_default']; // for pokemons > 1000 still no img found sometimes (see: all pikachu*)
     }
+    // if (!imgSrc: hide img)
     let types = [];
     for (let i = 0; i < currentPokemon.types.length; i++) {
         types.push(currentPokemon.types[i].type.name);
@@ -47,8 +51,6 @@ function extractData() {
 
 // extract and tmp save data from API
 async function savePokemonData() {
-    let arr;
-
     // refresh
     pokemonDataSelection = [];
 
@@ -57,6 +59,8 @@ async function savePokemonData() {
         await loadTargetPokemon(pokemonURL); // loadTargetPokemon sets currentPokemon
         extractData();
     }
+    // ready to load next batch:
+    loading = false;
 }
 
 function getPokemonDetails(name) {
