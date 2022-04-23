@@ -141,6 +141,7 @@ img {
     text-transform: capitalize;
     margin: 0;
     /* margin-bottom: 0.5rem; */
+    z-index:2;
 }
 
 #types {
@@ -181,6 +182,40 @@ img {
     transition: all 225ms linear;
 }
 
+.tablink{
+    background-color: rgba(180, 180, 180, 0.3);
+    border-radius:0.5rem;
+    padding: 0.25rem 0.5rem;
+    margin-right:0.5rem;
+}
+
+.active-tablink {
+    text-decoration: underline;
+    background-color: rgba(180, 180, 180, 0.7);
+}
+
+ul {
+    list-style-type: none;
+    margin: auto;
+    padding: 1rem;
+}
+
+ul li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+}
+
+.abilities {
+    max-height: 200 px; 
+    overflow-y:auto;
+}
+
+.center-x{
+    justify-content: center;
+}
+
+
 /* #poke-img {
     width:100%;
 }
@@ -198,7 +233,7 @@ img {
 #poke-img:hover,
 .card-img:hover {
     transform: scale(1.1);
-    z-index: 1;
+    z-index: 3;
     opacity: 1;
 }
 
@@ -222,6 +257,7 @@ img {
     text-transform: capitalize;
     /* text-align: center; */
     margin: 0.5rem 0;
+    z-index:2;
 }
 
 .pokemon-card {

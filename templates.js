@@ -37,7 +37,37 @@ function detailCardTemplate(element, pokemon) {
                 <!-- </span> -->
             </div>
             <div class="poke-info">
-                <!-- menu-select mit 3 reitern zu pokemon - details: 1.: abilities? 2.: stats 3.:  -->
+                <!-- menu-select mit 2-3 reitern zu pokemon - details: 1.: abilities? 2.: stats 3.:  -->
+                <!-- card 1: general info -->
+                <div class="tab-links">
+                    <a href="#" onclick="openTab(0)" class=" tablink active-tablink">General</a>
+                    <a href="#" onclick="openTab(1)" class="tablink">Stats</a>
+</div>
+                <div class="tabs">
+                    <ul>
+                        <li><span>Height:</span><span>10cm</span></li>
+                        <li><span>Weight:</span><span>1kg</span></li>
+                         <li><span>Abilities:</span><span>1kg</span></li>
+                        <li class="center-x">Moves:</li>
+                    </ul>
+                    <div class="abilities">
+                        <!-- render all abilities -->
+                    </div>
+                </div>
+                <!-- card 2: stats -->
+                <div class="tabs d-none">
+                    <ul>
+                        <li><span>HP:</span><span>0/255</span></li>
+                        <li><span>Attack:</span><span>0/255</span></li>
+                        <li><span>Defense:</span><span>0/255</span></li>
+                        <li><span>Special attack:</span><span>0/255</span></li>
+                        <li><span>Special defense:</span><span>0/255</span></li>
+                        <hr>
+                         <li><span>Total:</span><span>0</span></li>
+                        <li><span>Average:</span><span>0/255</span></li>
+
+                    </ul>
+                </div>
              </div>
         </div>
     `;
