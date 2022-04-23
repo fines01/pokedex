@@ -10,14 +10,13 @@ function cardTemplate(element, pokemon) {
             <h3>Type:</h3>
                 <div id="types">
                     <!-- get and render all types -->
-                    ${typesTemplate(pokemon.types)}
+                    ${renderTypes(pokemon.types)}
                 </div>
         </div>
     `;
 }
 
 function detailCardTemplate(element, pokemon) {
-
     element.innerHTML = /*html*/ `
         <div id="pokedex" class="" onclick="event.stopPropagation()">
             <div id="poke-title" style="background-color: var(--col-${pokemon.types[0]})">
@@ -27,7 +26,7 @@ function detailCardTemplate(element, pokemon) {
                     <!-- render Types  -->
                     <div id="types">
                         <!-- <p>${pokemon.types[0]}</p> -->
-                        ${typesTemplate(pokemon.types)}
+                        ${renderTypes(pokemon.types)}
                     </div>
                 </div>
                 <!-- <span class="shadow"> -->
@@ -37,35 +36,35 @@ function detailCardTemplate(element, pokemon) {
                 <!-- </span> -->
             </div>
             <div class="poke-info">
-                <!-- menu-select mit 2-3 reitern zu pokemon - details: 1.: abilities? 2.: stats 3.:  -->
                 <!-- card 1: general info -->
                 <div class="tab-links">
-                    <a href="#" onclick="openTab(0)" class=" tablink active-tablink">General</a>
+                    <a href="#" onclick="openTab(0)" class="tablink active-tablink">General</a>
                     <a href="#" onclick="openTab(1)" class="tablink">Stats</a>
-</div>
-                <div class="tabs">
+                </div>
+                <div class="tab">
                     <ul>
-                        <li><span>Height:</span><span>10cm</span></li>
-                        <li><span>Weight:</span><span>1kg</span></li>
-                         <li><span>Abilities:</span><span>1kg</span></li>
-                        <li class="center-x">Moves:</li>
+                        <li><span>Height:</span><span>${pokemon.height} m</span></li>
+                        <li><span>Weight:</span><span>${pokemon.weight} kg</span></li>
+                        <hr>
+                        <li><span>Abilities:</span>
+                            <span class="capitalize">
+                                ${renderAbilities(pokemon.abilities)}
+                            </span>
+                        </li>
+                        <hr>
+                        <!-- <li class="center-x">Moves:</li> -->
+                        <li><span>Moves:</span><span>${pokemon.moves.length}</span></li>
                     </ul>
-                    <div class="abilities">
-                        <!-- render all abilities -->
+                    <div class="moves">
+                        <!-- TODO allMoves template -->
+                        <!-- render moves -->
+                        ${renderMoves(pokemon.moves)}
                     </div>
                 </div>
                 <!-- card 2: stats -->
-                <div class="tabs d-none">
-                    <ul>
-                        <li><span>HP:</span><span>0/255</span></li>
-                        <li><span>Attack:</span><span>0/255</span></li>
-                        <li><span>Defense:</span><span>0/255</span></li>
-                        <li><span>Special attack:</span><span>0/255</span></li>
-                        <li><span>Special defense:</span><span>0/255</span></li>
-                        <hr>
-                         <li><span>Total:</span><span>0</span></li>
-                        <li><span>Average:</span><span>0/255</span></li>
-
+                <div class="tab d-none">
+                    <ul class="capitalize">
+                        ${renderStats(pokemon.stats)}
                     </ul>
                 </div>
              </div>
@@ -73,13 +72,47 @@ function detailCardTemplate(element, pokemon) {
     `;
 }
 
-function typesTemplate(types) {
+function renderMoves(moves) {
     let str = '';
-    for (let i = 0; i < types.length; i++) {
-        str += /*html*/ ` 
+    console.log(moves.length);
+    for (let i = 0; i < moves.length; i++) {
+        console.log(moves[i]);
+        str += /*html*/ `<span class="move">${moves[i]}</span> `;
+    }
+    return str;
+}
+
+function renderAbilities(abilities){
+    str = '';
+    for (let i = 0; i < abilities.length; i++){
+        str+=/*html*/`<span class="ability">${abilities[i]}</span><br>`;
+    }
+    return str;
+}
+
+function renderTypes(types) {
+    let str = '';
+        for (let i = 0; i < types.length; i++) {
+            str += /*html*/ ` 
             <span style="background-color: var(--col-${types[i]})">${types[i]}</span> 
         `;
-    };
+        };
+    return str;
+}
+
+function renderStats(stats) {
+    let str = ``, total = 0, average;
+    for (let i = 0; i < stats.length; i++) {
+        str += /*html*/ `
+        <li><span class="">${stats[i].name}:</span><span>${stats[i].value} / 255</span></li> `;
+        total += stats[i].value;
+    }
+    average = Math.round((total / stats.length)*100)/100;
+    str += /*html*/`
+        <hr>
+        <li><span>Total:</span><span><b>${total}</b></span></li>
+        <li><span>Average:</span><span><b>${average}</b> / 255</span></li>
+        `;
     return str;
 }
 

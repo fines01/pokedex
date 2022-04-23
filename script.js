@@ -30,6 +30,12 @@ async function loadTargetPokemon(src) {
 function extractData() {
     let id = currentPokemon['id'];
     let name = currentPokemon['name'];
+    let height = currentPokemon['height']; // height in decimeter
+    height = Math.round( height *10 ) /100; // height in m, rounded to 2 dec
+    let weight = currentPokemon['weight']; // weight in hectogram
+    weight = Math.round( weight * 10 ) /100; // weight in kg, rounded to max 2 dec
+
+    // get or extractImg()
     let imgSrc = currentPokemon['sprites']['other']['dream_world']['front_default'];
     if (!imgSrc) {
         // alternative image source as backup
@@ -37,16 +43,40 @@ function extractData() {
     }
     if( !imgSrc ){
         // second back-up
-        imgSrc= currentPokemon['sprites']['front_default']; // for pokemons > 1000 still no img found sometimes (see: all pikachu*)
+        imgSrc= currentPokemon['sprites']['front_default']; // for pokemons > 1000 still no img found sometimes (see: all pikachu*) TODO: placeholder-img or d-none img
     }
     // if (!imgSrc: hide img)
+    // END: getImg()
+
+    // get or extractTypes()
     let types = [];
     for (let i = 0; i < currentPokemon.types.length; i++) {
         types.push(currentPokemon.types[i].type.name);
     }
-    // further data: stats 
+    // END: getTypes()
+    // get abilities
+    let abilities = [];
+    for (let i = 0; i < currentPokemon.abilities.length; i++) {
+        abilities.push(currentPokemon.abilities[i].ability.name);
+    }
+    //
+    let moves = [];
+    for (let i = 0; i < currentPokemon.moves.length; i++) {
+        moves.push(currentPokemon.moves[i].move.name);
+    }
+    // id,name,height,weight AND types,abilities,moves: similar funct (similar data "constructs" in api) MAYBE check abt object deconstruction or so
+    let stats = [];
+    for (let i = 0; i < currentPokemon.stats.length; i++) {
+        stats.push({
+            'name':currentPokemon.stats[i].stat.name, 
+            'value':currentPokemon.stats[i].base_stat
+        });
+    }
+    // TODO: further data: 
+    // 2.: base stats: HP, attack, defense, special attack, special defense, speed (ev balken: max=255? in jew stat-col)| total, average
+    // 3.: moves
     // save Poke Object:
-    pokemonDataSelection.push({ name, id, imgSrc, types });
+    pokemonDataSelection.push({ name, id, imgSrc, height, weight, types, abilities, moves, stats });
 }
 
 // extract and tmp save data from API
@@ -96,6 +126,8 @@ async function handlePokemonSearch(){
     searchStr = getById('search-text').value;
     searchArr = editSearchString(searchStr);
 
+    // TODO: empty input - field
+    
     // refresh:
     pokemonDataSelection = [];
 
@@ -189,19 +221,47 @@ function renderDetailCard(name) {
 
 function toggleOverlay() {
     // getById('modal-overlay').classList.toggle('d-none');
-    toggle(getById('modal-overlay')); // zu viel des guten ???
-    getElements('body').classList.toggle('no-scroll');
+    toggleElement(getById('modal-overlay')); // zu viel des guten ???
+    getElement('body').classList.toggle('no-scroll');
 }
 
 function goBack(){
     loadPokemons(currentUrl);
 }
 
+function openTab(i){
+    let tabs = getClasses('tab');
+    let links = getClasses('tablink');
+    
+    for (let index = 0; index < tabs.length; index++) {
+        hide(tabs[index]);
+        links[index].classList.remove('active-tablink');
+    }
+
+    //tabs[i].classList.remove('d-none');
+    show(tabs[i]);
+    links[i].classList.add('active-tablink');
+}
+
 // generic functions:
 
-function toggle(...elements) {
+function toggleElement(...elements) {
     for (let i = 0; i < elements.length; i++) {
         elements[i].classList.toggle('d-none');
+    }
+}
+
+function hide(...elements){
+    for (let i = 0; i < elements.length; i++) {
+        console.log(elements[i]);
+        elements[i].classList.add('d-none');
+    }
+}
+
+function show(...elements) {
+    for (let i = 0; i < elements.length; i++) {
+        console.log(elements[i]);
+        elements[i].classList.remove('d-none');
     }
 }
 
@@ -210,7 +270,11 @@ function getById(element) {
 }
 
 // el needs class-prefix/identifyer passed with it
-function getElements(el){
+function getClasses(el){
+    return document.getElementsByClassName(el);
+}
+
+function getElement(el) {
     return document.querySelector(el);
 }
 

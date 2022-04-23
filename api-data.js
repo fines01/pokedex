@@ -1,3 +1,3 @@
-// get all pokemons (pagination: 20/site is default)
+// get all resources (pagination: 20/site is api default || lazyload all)
 
-// get specific pokemon: 1.:searchbar 2.: pokemon-details
+// get specific resource: 1.:searchbar 2.: pokemon-details

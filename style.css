@@ -197,7 +197,7 @@ img {
 ul {
     list-style-type: none;
     margin: auto;
-    padding: 1rem;
+    padding: 1rem 0 0 0;
 }
 
 ul li {
@@ -206,9 +206,37 @@ ul li {
     padding: 0.5rem 0;
 }
 
+.capitalize{
+    text-transform: capitalize;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
 .abilities {
     max-height: 200 px; 
-    overflow-y:auto;
+    overflow:auto;
+}
+
+.moves {
+    padding: 4px;
+    max-height: 10vh;
+    overflow-y: auto;
+    color: gray;
+    background-color: rgb(120, 120, 120, 0.2);
+    border-radius: 4px;
+    box-shadow: 0px 0px 3px 0px rgba(19, 19, 19, 0.9);
+}
+
+.move {
+    padding: 1px 2px;
+    margin: 4px;
+    margin-left: 0;
+    padding-left:0;
+    font-size:0.9rem;
+    /* border: 1px solid gray; */
+    /* border-radius: 8px; */
 }
 
 .center-x{
