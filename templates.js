@@ -74,9 +74,7 @@ function detailCardTemplate(element, pokemon) {
 
 function renderMoves(moves) {
     let str = '';
-    console.log(moves.length);
     for (let i = 0; i < moves.length; i++) {
-        console.log(moves[i]);
         str += /*html*/ `<span class="move">${moves[i]}</span> `;
     }
     return str;
