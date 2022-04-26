@@ -112,7 +112,7 @@ img {
 }
 
 #pokedex {
-    width: 350px;
+    width: 365px;
     min-height: 50vh;
     border-radius: 4px;
 }
@@ -221,7 +221,7 @@ ul li {
 
 .moves {
     padding: 4px;
-    max-height: 10vh;
+    height: 15vh;
     overflow-y: auto;
     color: gray;
     background-color: rgb(120, 120, 120, 0.2);
@@ -298,7 +298,7 @@ ul li {
     background-color: rgb(255, 255, 255, 0.5);
     cursor: pointer;
     /* box-sizing: border-box; */
-    /* height: 200px; */
+    height: 150px;
 }
 
 /* .col-overlay {
@@ -381,6 +381,8 @@ ul li {
 
     /* test */
     min-height: 50vh;
+    height: 57vh; /* better fixed height*/
+    overflow-y: auto;
 }
 
 /* *** pokedex cards container  *** */
