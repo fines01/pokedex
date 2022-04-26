@@ -3,7 +3,7 @@ function cardTemplate(element, pokemon) {
         <div class="pokemon-card" onclick="toggleOverlay();renderDetailCard('${pokemon.name}')"  style="border: 1px solid var(--col-${pokemon.types[0]})"
         onmouseover="this.style.backgroundColor='var(--col-${pokemon.types[0]})'" onmouseout="this.style.backgroundColor='rgb(255, 255, 255, 0.5)'">
         <!-- <img class="fav-icon d-none" src="img/favorite-4.ico" alt="favourite pokemon icon"> -->
-        <img class="add-icon" src="img/add.ico" alt="add pokemon icon">
+        <img id="fav-${pokemon.name}" class="add-icon" onclick="event.stopPropagation(); handleFavourites('${pokemon.name}')" src="img/add.ico" alt="add pokemon icon">
             <!-- <div class="col-overlay" style="background-color: var(--col-${pokemon.types[0]})"></div> -->
             <!-- show id for TESTING purposes -->
             <span class="poke-id">${pokemon.id}</span>

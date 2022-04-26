@@ -301,13 +301,20 @@ ul li {
     height: 150px;
 }
 
-.fav-icon, .add-icon {
+/* .fav-icon,  */
+.add-icon {
     width: 1.6rem;
     border-radius:50%;
     opacity: 0.4;
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
+    transition: all 225ms linear;
+}
+
+.add-icon:hover {
+    transform: scale(1.2);
+    opacity: 0.7;
 }
 
 .add-fav {

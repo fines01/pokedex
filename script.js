@@ -1,4 +1,4 @@
-let currentPokemon, pokemonDataSelection = [], pokemons, currentUrl, favourites;
+let currentPokemon, pokemonDataSelection = [], pokemons, currentUrl, favourites=[];
 let endpoint = 'pokemon';
 let limit = 18;
 let apiURL = `https://pokeapi.co/api/v2/${endpoint}?limit=${limit}`;
@@ -111,7 +111,7 @@ async function loadPrevious() {
     }
 }
 
-// get Pokemon by name or ID
+// get Pokemon by name or ID (gn id until 898?)
 async function searchPokemon(nameOrId) { 
     let url = `https://pokeapi.co/api/v2/pokemon/${nameOrId}`;
     await loadTargetPokemon(url);
@@ -180,6 +180,29 @@ async function filterPokemonNames(str) {
 
 async function filterPokemonTypes(str) { /*in progress*/ }
 
+function handleFavourites(pokemon){
+    let icon = getById('fav-'+pokemon);
+    // toggle icon fav view
+    icon.classList.toggle('add-fav');
+    // add to or remove from favourites-collection
+    let index = favourites.indexOf(pokemon);
+    if (index == -1){
+        favourites.push(pokemon);
+    } else {
+        favourites.splice(index,1);
+    }
+    console.log(favourites);
+    // TODO: save & get favourites in & from local storage
+}
+
+async function getFavourites(){
+    pokemonDataSelection = [];
+    for (let i = 0; i < favourites.length; i++) {
+        await searchPokemon(favourites[i]);
+        extractData();
+    }
+    renderSearchResults();
+}
 
 function renderSearchResults(){
     // td.: error - case
@@ -209,6 +232,7 @@ function renderCards() {
         cardTemplate(container, pokemon);
     }
     renderPaginationLinks(); /* TODO ausblenden wenn kein prev/next existiert */
+    // TODO fav-icons add classs for favorites
 }
 
 function renderDetailCard(name) { 
