@@ -1,4 +1,5 @@
-let currentPokemon, pokemonDataSelection = [], pokemons, currentUrl, favourites=[];
+let currentPokemon, pokemonDataSelection = [],
+    pokemons, currentUrl, favourites = [];
 let endpoint = 'pokemon';
 let limit = 18;
 let apiURL = `https://pokeapi.co/api/v2/${endpoint}?limit=${limit}`;
@@ -17,7 +18,7 @@ async function loadPokemons(url = apiURL) {
         await savePokemonData();
         renderCards();
         currentUrl = url; //not another global, meh
-    }    
+    }
 }
 
 // load single pokemon
@@ -28,55 +29,66 @@ async function loadTargetPokemon(src) {
 
 // extract relavant data of currently loaded pokemon and add to pokemonDataSelection array
 function extractData() {
-    let id = currentPokemon['id'];
-    let name = currentPokemon['name'];
-    let height = currentPokemon['height']; // height in decimeter
-    height = Math.round( height *10 ) /100; // height in m, rounded to 2 dec
-    let weight = currentPokemon['weight']; // weight in hectogram
-    weight = Math.round( weight * 10 ) /100; // weight in kg, rounded to max 2 dec
+    let alreadyExtracted = pokemonDataSelection.filter(poke => poke.id == currentPokemon['id']);
+    if (alreadyExtracted.length < 1) {
 
-    // get or extractImg()
-    let imgSrc = currentPokemon['sprites']['other']['dream_world']['front_default'];
-    if (!imgSrc) {
-        // alternative image source as backup
-        imgSrc = currentPokemon['sprites']['other']['home']['front_shiny'];
-    }
-    if( !imgSrc ){
-        // second back-up
-        imgSrc= currentPokemon['sprites']['front_default']; // for pokemons > 1000 still no img found sometimes (see: all pikachu*) TODO: placeholder-img or d-none img
-    }
-    // if (!imgSrc: hide img)
-    // END: getImg()
+        let id = currentPokemon['id'];
+        let name = currentPokemon['name'];
+        let height = currentPokemon['height']; // height in decimeter
+        height = Math.round(height * 10) / 100; // height in m, rounded to 2 dec
+        let weight = currentPokemon['weight']; // weight in hectogram
+        weight = Math.round(weight * 10) / 100; // weight in kg, rounded to max 2 dec
 
-    // get or extractTypes()
-    let types = [];
-    for (let i = 0; i < currentPokemon.types.length; i++) {
-        types.push(currentPokemon.types[i].type.name);
-    }
-    // END: getTypes()
-    // get abilities
-    let abilities = [];
-    for (let i = 0; i < currentPokemon.abilities.length; i++) {
-        abilities.push(currentPokemon.abilities[i].ability.name);
-    }
-    //
-    let moves = [];
-    for (let i = 0; i < currentPokemon.moves.length; i++) {
-        moves.push(currentPokemon.moves[i].move.name);
-    }
-    // id,name,height,weight AND types,abilities,moves: similar funct (similar data "constructs" in api) MAYBE check abt object deconstruction or so
-    let stats = [];
-    for (let i = 0; i < currentPokemon.stats.length; i++) {
-        stats.push({
-            'name':currentPokemon.stats[i].stat.name, 
-            'value':currentPokemon.stats[i].base_stat
+        // get or extractImg()
+        let imgSrc = currentPokemon['sprites']['other']['dream_world']['front_default'];
+        if (!imgSrc) {
+            // alternative image source as backup
+            imgSrc = currentPokemon['sprites']['other']['home']['front_shiny'];
+        }
+        if (!imgSrc) {
+            // second back-up
+            imgSrc = currentPokemon['sprites']['front_default']; // for pokemons > 1000 still no img found sometimes (see: all pikachu*) TODO: placeholder-img or d-none img
+        }
+        // if (!imgSrc: hide img)
+        // END: getImg()
+
+        // get or extractTypes()
+        let types = [];
+        for (let i = 0; i < currentPokemon.types.length; i++) {
+            types.push(currentPokemon.types[i].type.name);
+        }
+        // END: getTypes()
+        // get abilities
+        let abilities = [];
+        for (let i = 0; i < currentPokemon.abilities.length; i++) {
+            abilities.push(currentPokemon.abilities[i].ability.name);
+        }
+        //
+        let moves = [];
+        for (let i = 0; i < currentPokemon.moves.length; i++) {
+            moves.push(currentPokemon.moves[i].move.name);
+        }
+        // id,name,height,weight AND types,abilities,moves: similar funct (similar data "constructs" in api) MAYBE check abt object deconstruction or so
+        let stats = [];
+        for (let i = 0; i < currentPokemon.stats.length; i++) {
+            stats.push({
+                'name': currentPokemon.stats[i].stat.name,
+                'value': currentPokemon.stats[i].base_stat
+            });
+        }
+        // save Poke Object:
+        pokemonDataSelection.push({
+            name,
+            id,
+            imgSrc,
+            height,
+            weight,
+            types,
+            abilities,
+            moves,
+            stats
         });
     }
-    // TODO: further data: 
-    // 2.: base stats: HP, attack, defense, special attack, special defense, speed (ev balken: max=255? in jew stat-col)| total, average
-    // 3.: moves
-    // save Poke Object:
-    pokemonDataSelection.push({ name, id, imgSrc, height, weight, types, abilities, moves, stats });
 }
 
 // extract and tmp save data from API
@@ -112,22 +124,24 @@ async function loadPrevious() {
 }
 
 // get Pokemon by name or ID (gn id until 898?)
-async function searchPokemon(nameOrId) { 
+async function searchPokemon(nameOrId) {
     let url = `https://pokeapi.co/api/v2/pokemon/${nameOrId}`;
     await loadTargetPokemon(url);
 }
 
-async function handleTypesSearch() { /*in progress*/ }
+async function handleTypesSearch() {
+    /*in progress*/ }
 
-async function handlePokemonSearch(){
-    let searchArr = [], searchStr;
+async function handlePokemonSearch() {
+    let searchArr = [],
+        searchStr;
 
     // search string bearbeiten
     searchStr = getById('search-text').value;
     searchArr = editSearchString(searchStr);
 
     // TODO: empty input - field
-    
+
     // refresh:
     pokemonDataSelection = [];
 
@@ -140,7 +154,7 @@ async function handlePokemonSearch(){
     renderSearchResults();
 }
 
-function editSearchString(str){
+function editSearchString(str) {
     let searchStr = str.toLowerCase();
     return searchStr.split(' '); // return array with search strings
 }
@@ -154,7 +168,7 @@ async function getSearchResults(searchArr) { // function still too big ?
             console.log('id: ', searchArr[i]);
             await searchPokemon(searchArr[i]);
             extractData();
-        // case: name/string
+            // case: name/string
         } else {
             // namesArr.push( await ...( filterPokemonNames(searchArr[i]) ) ); // fkt? nope
             let foundNames = await filterPokemonNames(searchArr[i]);
@@ -178,24 +192,25 @@ async function filterPokemonNames(str) {
     return foundNames;
 }
 
-async function filterPokemonTypes(str) { /*in progress*/ }
+async function filterPokemonTypes(str) {
+    /*in progress*/ }
 
-function handleFavourites(pokemon){
-    let icon = getById('fav-'+pokemon);
+function handleFavourites(pokemon) {
+    let icon = getById('fav-' + pokemon);
     // toggle icon fav view
     icon.classList.toggle('add-fav');
     // add to or remove from favourites-collection
     let index = favourites.indexOf(pokemon);
-    if (index == -1){
+    if (index == -1) {
         favourites.push(pokemon);
     } else {
-        favourites.splice(index,1);
+        favourites.splice(index, 1);
     }
     console.log(favourites);
     // TODO: save & get favourites in & from local storage
 }
 
-async function getFavourites(){
+async function getFavourites() {
     pokemonDataSelection = [];
     for (let i = 0; i < favourites.length; i++) {
         await searchPokemon(favourites[i]);
@@ -204,7 +219,7 @@ async function getFavourites(){
     renderSearchResults();
 }
 
-function renderSearchResults(){
+function renderSearchResults() {
     // td.: error - case
     renderCards();
     renderBackBtn();
@@ -223,8 +238,8 @@ function renderPaginationLinks() {
 function renderCards() {
     let container = getById('cards-container');
     container.innerHTML = '';
-    if (pokemonDataSelection < 1){
-        container.innerHTML =' <h4 style="padding-top:3rem;"> No data found </h4> ';
+    if (pokemonDataSelection < 1) {
+        container.innerHTML = ' <h4 style="padding-top:3rem;"> No data found </h4> ';
     }
     //load pokemon infos
     for (let i = 0; i < pokemonDataSelection.length; i++) {
@@ -235,7 +250,7 @@ function renderCards() {
     // TODO fav-icons add classs for favorites
 }
 
-function renderDetailCard(name) { 
+function renderDetailCard(name) {
     let overlay = getById('modal-overlay');
     // 1. load/get pokemon info: set currentPokemon (OR get Info from pokemonDataSelection?)
     let pokemon = getPokemonDetails(name);
@@ -249,14 +264,14 @@ function toggleOverlay() {
     getElement('body').classList.toggle('no-scroll');
 }
 
-function goBack(){
+function goBack() {
     loadPokemons(currentUrl);
 }
 
-function openTab(i){
+function openTab(i) {
     let tabs = getClasses('tab');
     let links = getClasses('tablink');
-    
+
     for (let index = 0; index < tabs.length; index++) {
         hide(tabs[index]);
         links[index].classList.remove('active-tablink');
@@ -275,7 +290,7 @@ function toggleElement(...elements) {
     }
 }
 
-function hide(...elements){
+function hide(...elements) {
     for (let i = 0; i < elements.length; i++) {
         console.log(elements[i]);
         elements[i].classList.add('d-none');
@@ -294,11 +309,10 @@ function getById(element) {
 }
 
 // el needs class-prefix/identifyer passed with it
-function getClasses(el){
+function getClasses(el) {
     return document.getElementsByClassName(el);
 }
 
 function getElement(el) {
     return document.querySelector(el);
 }
-
