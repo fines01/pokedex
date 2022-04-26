@@ -277,7 +277,7 @@ ul li {
 
 .poke-id {
     position: absolute;
-    top:0.5rem; left:0.5rem;
+    top:0.5rem; right:0.5rem;
     font-size: 0.8rem;
     color: gray;
 }
@@ -299,6 +299,21 @@ ul li {
     cursor: pointer;
     /* box-sizing: border-box; */
     height: 150px;
+}
+
+.fav-icon, .add-icon {
+    width: 1.6rem;
+    border-radius:50%;
+    opacity: 0.4;
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+}
+
+.add-fav {
+    /* background-color:#fb6c6c; */
+    background-color:#fa5555;
+    opacity: 0.8;
 }
 
 /* .col-overlay {
