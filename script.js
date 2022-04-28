@@ -165,7 +165,6 @@ async function getSearchResults(searchArr) { // function still too big ?
     for (let i = 0; i < searchArr.length; i++) {
         // case: id 
         if (!isNaN(searchArr[i] * 1)) {
-            console.log('id: ', searchArr[i]);
             await searchPokemon(searchArr[i]);
             extractData();
             // case: name/string
@@ -206,8 +205,20 @@ function handleFavourites(pokemon) {
     } else {
         favourites.splice(index, 1);
     }
-    console.log(favourites);
     // TODO: save & get favourites in & from local storage
+    saveDataLocally();
+}
+
+function saveDataLocally(){
+    let favouritesStr = JSON.stringify(favourites);
+    localStorage.setItem('favouritePokemons', favouritesStr);
+}
+
+function loadLocalData(){
+    let favouritesStr = localStorage.getItem('favouritePokemons');
+    if(favouritesStr){
+        favourites = JSON.parse(favouritesStr);
+    }
 }
 
 async function getFavourites() {

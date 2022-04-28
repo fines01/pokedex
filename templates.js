@@ -9,7 +9,7 @@ function cardTemplate(element, pokemon) {
             <!-- show id for TESTING purposes -->
             <span class="poke-id">${pokemon.id}</span>
             <h2 class="pokemon-name">${pokemon.name}</h2>
-            <img class="card-img" src="${pokemon.imgSrc}" alt="Pokemon image">
+            <img loading="lazy" class="card-img" src="${pokemon.imgSrc}" alt="Pokemon image">
             <h3>Type:</h3>
                 <div id="types">
                     <!-- get and render all types -->
@@ -41,8 +41,8 @@ function detailCardTemplate(element, pokemon) {
             <div class="poke-info">
                 <!-- card 1: general info -->
                 <div class="tab-links">
-                    <a href="#" onclick="openTab(0)" class="tablink active-tablink">General</a>
-                    <a href="#" onclick="openTab(1)" class="tablink">Stats</a>
+                    <span onclick="openTab(0)" class="tablink active-tablink">General</span>
+                    <span onclick="openTab(1)" class="tablink">Stats</span>
                 </div>
                 <div class="tab">
                     <ul>
