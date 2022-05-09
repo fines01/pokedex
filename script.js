@@ -35,7 +35,7 @@ function extractData() {
         let id = currentPokemon['id'];
         let name = currentPokemon['name'];
         let height = currentPokemon['height']; // height in decimeter
-        height = Math.round(height * 10) / 100; // height in m, rounded to 2 dec
+        height = Math.round(height * 10) / 100; // height in m, rounded to max 2 dec
         let weight = currentPokemon['weight']; // weight in hectogram
         weight = Math.round(weight * 10) / 100; // weight in kg, rounded to max 2 dec
 

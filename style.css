@@ -462,3 +462,15 @@ footer {
     gap: 1rem;
     box-sizing: border-box;
 }
+
+/* Imprint */
+
+.icons-attribution {
+    margin: 50px;
+    line-height: 1.5;
+}
+
+.icons-attribution a {
+    padding-left:0;
+    text-decoration: underline;
+}
