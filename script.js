@@ -194,7 +194,7 @@ async function filterPokemonNames(str) {
 async function filterPokemonTypes(str) {
     /*in progress*/ }
 
-function handleFavourites(pokemon) {
+function handleFavourites(pokemon) { // AE: favOrites !! change for consistency
     let icon = getById('fav-' + pokemon);
     // toggle icon fav view
     icon.classList.toggle('add-fav');
@@ -228,6 +228,12 @@ async function getFavourites() {
         extractData();
     }
     renderSearchResults();
+    // renderViewLink(); TODO
+}
+// TODO
+function renderViewLink(){
+    getById('view-link').innerHTML='All Pokemons' // Favorites //onclick =goBack() (to currentURL)
+
 }
 
 function renderSearchResults() {
