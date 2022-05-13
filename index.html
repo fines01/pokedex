@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Font awesome ? -->
-    <!-- google fonts -->
+    <!-- google fonts (todo) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap"
@@ -25,18 +24,29 @@
 <body onload="init()">
 
     <div class="main-content">
+        <!-- navbar -->
         <nav>
             <div class="nav-content">
                 <!-- <a href="index.html">PokéDex</a> -->
                 <a href="index.html"><img class="logo" src="img/pokedex-white.svg" alt="pokedex logo"></a>
             </div>
             <div class="nav-content search-box">
-                <input id="search-text" type="text" placeholder="search pokemon...">
+                <input id="search-text" class="search-string" type="text" placeholder="search pokemon...">
                 <button onclick="handlePokemonSearch()">Search</button>
             </div>
             <div class="nav-content nav-links">
                 <a id="back-link" class="d-none" href="#" onclick="goBack()">Back</a>
                 <a id="fav-link" class="" href="#" onclick="getFavourites()">Favorites</a>
+            </div>
+            <img src="img/menu-white.png" alt="toggle menu icon" class="toggle-menu-icon" onclick="toggleMenu(); toggleElement(getById('mobile-menu'))">
+        </nav>
+        <!-- mobile navbar -->
+        <nav id="mobile-menu" class="d-none">
+            <a id="back-link-mobile" class="back-link d-none" href="#" onclick="goBack()">Back</a>
+            <a id="fav-link-mobile" class="fav-link" href="#" onclick="getFavourites()">Favorites</a>
+            <div id="searchbar-mobile" class="flex f-center">
+                <input id="search-text-mobile" class="search-string" type="text" placeholder="search pokemon...">
+                <img src="../img/search-32-white.ico" alt="search icon" class="search-icon" onclick="handlePokemonSearch()">
             </div>
         </nav>
         <!-- modal -->
