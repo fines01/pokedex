@@ -22,7 +22,7 @@
     <link rel="icon" type="image/x-icon" href="img/pokeball2.png">
 </head>
 
-<body onload="loadLocalData(); loadPokemons()">
+<body onload="init()">
 
     <div class="main-content">
         <nav>
@@ -37,15 +37,14 @@
             <div class="nav-content nav-links">
                 <a id="back-link" class="d-none" href="#" onclick="goBack()">Go Back</a>
                 <a id="fav-link" class="" href="#" onclick="getFavourites()">Favorites</a>
-                <!-- <a id="view-link" href="#" onclick="getFavourites()">Favorites</a> -->
-                <!-- <a href="#">Sort</a> -->
-                <!-- <a href="#">OtherLink</a> -->
             </div>
         </nav>
         <!-- modal -->
         <div id="modal-overlay" class="d-none" onclick="toggleOverlay()"></div>
         <!-- pokemon cards -->
-        <div id="cards-container"></div>
+        <div id="cards-container">
+            <div id="loader"><img src="img/pokeball2.png" alt=""></div>
+        </div>
         <div id="pagination-links"></div>
     </div>
     <!-- end: main-content -->

@@ -88,7 +88,9 @@ nav {
     font-weight: bold;
     color: white;
     background-color: rgb(0, 0, 0,0.9);
-    border-bottom: 1px solid darkturquoise;
+    border-bottom: 1px solid white;
+    outline: 1px solid white;
+    outline-offset: -8px;
 }
 
 .nav-links {
@@ -250,21 +252,6 @@ ul li {
     justify-content: center;
 }
 
-
-/* #poke-img {
-    width:100%;
-}
-
-.img-box {
-    position: absolute;
-    right: -25%;
-    bottom: -25%;
-    z-index: 1;
-    width:50%;
-    height:auto;
-    object-fit:cover;
-} */
-
 #poke-img:hover,
 .card-img:hover {
     transform: scale(1.1);
@@ -330,26 +317,6 @@ ul li {
     opacity: 0.8;
 }
 
-/* .col-overlay {
-    position: absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-    opacity: 0.25;
-}
-
-.col-overlay:hover {
-    opacity: 0;
-} */
-
-/* .pokemon-card::before{
-    content: "";
-    position: absolute;
-    top:0; bottom:0;
-    left:0; right:0;
-} */
-
 .card-img {
     position: absolute;
     top: 1rem;
@@ -381,21 +348,6 @@ ul li {
     background-color: limegreen;
 
 }
-
-/* .shadow {
-   position: absolute;
-   right: 2rem;
-   bottom: -50px;
-   transition: all 225ms linear;
-   margin: 0;
-   padding:0;
-   border-radius: 50%;
-}
-.shadow:hover {
-    transform: scale(1.1);
-    box-shadow: 1px 1px 30px 10px rgba(225, 255, 0, 0.6);
-    background-color: rgba(225, 255, 0, 0.6);
-} */
 
 .poke-info {
     background-color: white;
@@ -484,3 +436,37 @@ footer {
 .logo {
     height: 2rem;
 }
+
+#loader img {
+    /* width: 150px;*/
+    transition: all 225ms linear;
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0);}
+    50% {transform: rotate(180deg);}
+    100% {transform: rotate(360deg);}
+}
+
+/* *** Scrollbar *** */
+
+/* ::-webkit-scrollbar {
+    width: 8px;
+} */
+
+/* Track */
+/* ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+} */
+
+/* Handle */
+/* ::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background: black;
+} */
+
+/* Handle on hover */
+/* ::-webkit-scrollbar-thumb:hover {
+    background: rgb(0, 155, 158);
+} */

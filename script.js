@@ -5,20 +5,27 @@ let limit = 18;
 let apiURL = `https://pokeapi.co/api/v2/${endpoint}?limit=${limit}`;
 let loading = false;
 
-// function init() {
-//     loadPokemons();
-// }
+function init() {
+    loadLocalData();
+    loadPokemons();
+}
 
 // load Pokemons from API
 async function loadPokemons(url = apiURL) {
     if (!loading) {
         loading = true;
+        renderLoader(); // mb also disable pagination-links while loading (instead or add let loading )?
         let response = await fetch(url);
         pokemons = await response.json(); // [results, next, previous], results: --> [{"name", "url"}]
-        await savePokemonData();
+        await savePokemonData(); // await until promise returns its result
         renderCards();
-        currentUrl = url; //not another global, meh
+        currentUrl = url;
     }
+}
+
+function renderLoader() {
+    console.log('catching Pokemons...');
+    getById('cards-container').innerHTML = '<div id="loader"><img src="img/pokeball2.png" alt=""></div>';
 }
 
 // load single pokemon
@@ -141,7 +148,7 @@ async function handlePokemonSearch() {
     searchArr = editSearchString(searchStr);
 
     // TODO: empty input - field
-
+    renderLoader();
     // refresh:
     pokemonDataSelection = [];
     // for all string-fragments: search for all matching pokemon names or IDs
@@ -215,6 +222,7 @@ function loadLocalData(){
 }
 
 async function getFavourites() {
+    renderLoader();
     pokemonDataSelection = [];
     for (let i = 0; i < favourites.length; i++) {
         await searchPokemon(favourites[i]);
@@ -301,14 +309,12 @@ function toggleElement(...elements) {
 
 function hide(...elements) {
     for (let i = 0; i < elements.length; i++) {
-        console.log(elements[i]);
         elements[i].classList.add('d-none');
     }
 }
 
 function show(...elements) {
     for (let i = 0; i < elements.length; i++) {
-        console.log(elements[i]);
         elements[i].classList.remove('d-none');
     }
 }
