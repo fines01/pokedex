@@ -36,66 +36,85 @@ async function loadTargetPokemon(src) {
 
 // extract relavant data of currently loaded pokemon and add to pokemonDataSelection array
 function extractData() {
+    // prevent doubles
     let alreadyExtracted = pokemonDataSelection.filter(poke => poke.id == currentPokemon['id']);
+
     if (alreadyExtracted.length < 1) {
 
-        let id = currentPokemon['id'];
-        let name = currentPokemon['name'];
-        let height = currentPokemon['height']; // height in decimeter
-        height = Math.round(height * 10) / 100; // height in m, rounded to max 2 dec
-        let weight = currentPokemon['weight']; // weight in hectogram
-        weight = Math.round(weight * 10) / 100; // weight in kg, rounded to max 2 dec
+        let [id,name,height,weight] = extractBaseData('id','name','height','weight');
+        let [types, abilities, moves] = extractBasedataArrays(['types','type'], ['abilities','ability'],['moves','move']);
+        
+        // convert height & weight units
+        height = Math.round(height * 10) / 100; // height from dm in m, rounded to max 2 dec
+        weight = Math.round(weight * 10) / 100; // weight from hg in kg, rounded to max 2 dec
+        
+        let imgSrc = extractImg();
+        let stats = extractStats();
 
-        // get or extractImg()
-        let imgSrc = currentPokemon['sprites']['other']['dream_world']['front_default'];
-        if (!imgSrc) {
-            // alternative image source as backup
-            imgSrc = currentPokemon['sprites']['other']['home']['front_shiny'];
-        }
-        if (!imgSrc) {
-            // second back-up
-            imgSrc = currentPokemon['sprites']['front_default']; // for pokemons > 1000 still no img found sometimes (see: all pikachu*) TODO: placeholder-img or d-none img
-        }
-        // if (!imgSrc: hide img)
-        // END: getImg()
-
-        // get or extractTypes()
-        let types = [];
-        for (let i = 0; i < currentPokemon.types.length; i++) {
-            types.push(currentPokemon.types[i].type.name);
-        }
-        // END: getTypes()
-        // get abilities
-        let abilities = [];
-        for (let i = 0; i < currentPokemon.abilities.length; i++) {
-            abilities.push(currentPokemon.abilities[i].ability.name);
-        }
-        //
-        let moves = [];
-        for (let i = 0; i < currentPokemon.moves.length; i++) {
-            moves.push(currentPokemon.moves[i].move.name);
-        }
-        // id,name,height,weight AND types,abilities,moves: similar funct (similar data "constructs" in api) MAYBE check abt object deconstruction or so
-        let stats = [];
-        for (let i = 0; i < currentPokemon.stats.length; i++) {
-            stats.push({
-                'name': currentPokemon.stats[i].stat.name,
-                'value': currentPokemon.stats[i].base_stat
+        // save Pokemon object:
+        pokemonDataSelection.push(
+            {
+                name, id, imgSrc, height, weight, types, abilities, moves, stats
             });
+    }
+}
+
+function extractBaseData(...labels){
+    let dataArr = [];
+    for (let i = 0; i < labels.length; i++) {
+        dataArr.push(currentPokemon[labels[i]])
+    }
+    return dataArr;
+}
+
+//// OLD and lame function:
+// function extractBaseDataArray(arrayLabel, label) {
+//     let dataArr = []
+//     for (let i = 0; i < currentPokemon[arrayLabel].length; i++) {
+//         dataArr.push(currentPokemon[arrayLabel][i][label]['name']);
+//     }
+//     return dataArr;
+// }
+
+//// NEW and shiny with array deconstruction
+function extractBasedataArrays(...labelsArr){
+    let dataArr=[]
+    for (let i = 0; i < labelsArr.length; i++) {
+        let arrName = labelsArr[i][0];
+        let dataName = labelsArr[i][1];
+
+        let singleDataArr=[];
+        for (let i = 0; i < currentPokemon[arrName].length; i++) {
+            singleDataArr.push(currentPokemon[arrName][i][dataName]['name']);
         }
-        // save Poke Object:
-        pokemonDataSelection.push({
-            name,
-            id,
-            imgSrc,
-            height,
-            weight,
-            types,
-            abilities,
-            moves,
-            stats
+        dataArr.push(singleDataArr);
+    }
+    return dataArr;
+}
+
+function extractImg() {
+    let pokemonImg = currentPokemon['sprites']['other']['dream_world']['front_default'];
+    if (!pokemonImg) {
+        // alternative image source as backup
+        pokemonImg = currentPokemon['sprites']['other']['home']['front_shiny'];
+    }
+    if (!pokemonImg) {
+        // second back-up
+        pokemonImg = currentPokemon['sprites']['front_default']; // for pokemons > 1000 still no img found sometimes (see: all pikachu*) TODO: placeholder-img or d-none img
+    }
+    // TODO if (!pokemonImg: hide img or replacement img)
+    return pokemonImg;
+}
+
+function extractStats(){
+    let stats = [];
+    for (let i = 0; i < currentPokemon.stats.length; i++) {
+        stats.push({
+            'name': currentPokemon.stats[i].stat.name,
+            'value': currentPokemon.stats[i].base_stat
         });
     }
+    return stats;
 }
 
 // extract and tmp save data from API
@@ -190,10 +209,9 @@ async function filterPokemonNames(str) {
     return foundNames;
 }
 
-async function filterPokemonTypes(str) {
-    /*in progress*/ }
+async function filterPokemonTypes(str) {/*in progress*/}
 
-function handleFavourites(pokemon) { // AE: favOrites !! change for consistency
+function handleFavourites(pokemon) { // oops AE: favOrites !! change for consistency
     let icon = getById('fav-' + pokemon);
     // toggle icon fav view
     icon.classList.toggle('add-fav');
@@ -280,6 +298,10 @@ function toggleOverlay() {
     getElement('body').classList.toggle('no-scroll');
 }
 
+function toggleMenu(){
+    //toggle mobile menu
+}
+
 function goBack() {
     loadPokemons(currentUrl);
     show(getById('fav-link'));
@@ -328,7 +350,7 @@ function getById(element) {
     return document.getElementById(element);
 }
 
-// el needs class-prefix/identifyer passed with it
+// 
 function getClasses(el) {
     return document.getElementsByClassName(el);
 }
