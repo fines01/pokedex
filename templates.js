@@ -3,10 +3,6 @@ function cardTemplate(element, pokemon) {
         <div class="pokemon-card" onclick="toggleOverlay();renderDetailCard('${pokemon.name}')"  style="border: 1px solid var(--col-${pokemon.types[0]})"
         onmouseover="this.style.backgroundColor='var(--col-${pokemon.types[0]})'" onmouseout="this.style.backgroundColor='rgb(255, 255, 255, 0.5)'">
         ${renderFavIcon(pokemon.name)}
-        <!-- <img class="fav-icon d-none" src="img/favorite-4.ico" alt="favourite pokemon icon"> -->
-        <!-- <img id="fav-${pokemon.name}" class="add-icon" onclick="event.stopPropagation(); handleFavourites('${pokemon.name}')" src="img/add.ico" alt="add pokemon icon"> -->
-            <!-- <div class="col-overlay" style="background-color: var(--col-${pokemon.types[0]})"></div> -->
-            <!-- show id for TESTING purposes -->
             <span class="poke-id">${pokemon.id}</span>
             <h2 class="pokemon-name">${pokemon.name}</h2>
             <img loading="lazy" class="card-img" src="${pokemon.imgSrc}" alt="Pokemon image">
@@ -32,11 +28,9 @@ function detailCardTemplate(element, pokemon) {
                         ${renderTypes(pokemon.types)}
                     </div>
                 </div>
-                <!-- <span class="shadow"> -->
                 <div class="img-box">
                     <img id="poke-img" src="${pokemon.imgSrc}" alt="pokemon image">
                 </div>
-                <!-- </span> -->
             </div>
             <div class="poke-info">
                 <!-- card 1: general info -->
@@ -55,12 +49,9 @@ function detailCardTemplate(element, pokemon) {
                             </span>
                         </li>
                         <hr>
-                        <!-- <li class="center-x">Moves:</li> -->
                         <li><span>Moves:</span><span>${pokemon.moves.length}</span></li>
                     </ul>
                     <div class="moves">
-                        <!-- TODO allMoves template -->
-                        <!-- render moves -->
                         ${renderMoves(pokemon.moves)}
                     </div>
                 </div>

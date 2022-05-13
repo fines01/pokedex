@@ -164,7 +164,7 @@ async function handlePokemonSearch() {
     let searchArr = [];
     let searchStr;
     // search string bearbeiten
-    searchStr = getById('search-text').value;
+    searchStr = (getClasses('search-string')[0].value != '') ? getClasses('search-string')[0].value : getClasses('search-string')[1].value;
     searchArr = editSearchString(searchStr);
     renderLoader();
     pokemonDataSelection = [];
@@ -245,17 +245,16 @@ async function getFavourites() {
         extractData();
     }
     renderSearchResults();
-    // show(getById('back-link'));
-    hide(getById('fav-link'));
-    // getById('back-link').innerHTML = '';
+    // hide(getById('fav-link'));
+    hide(...(getClasses('fav-link')));
 }
 
 function renderSearchResults() {
     // td.: error - case
     renderCards();
     renderBackBtn();
-    show(getById('back-link'));
-    //getById('back-link').innerHTML = '<a id="fav-link" href="#" onclick="goBack()">Back</a>';
+    // show(getById('back-link'));
+    show(...(getClasses('back-link')));
 }
 
 function renderBackBtn() {
@@ -270,7 +269,7 @@ function renderPaginationLinks() {
 
 function renderCards() {
     let container = getById('cards-container');
-    let searchField = getById('search-text').value = '';
+    let searchField = getById('search-text').value = ''; //TODO via getClasses für alle isearch-inputs
 
     container.innerHTML = '';
     if (pokemonDataSelection < 1) {
@@ -304,8 +303,8 @@ function toggleMenu(){
 
 function goBack() {
     loadPokemons(currentUrl);
-    show(getById('fav-link'));
-    hide(getById('back-link'));
+    show(...(getClasses('fav-link')));
+    hide(...(getClasses('back-link')));
 }
 
 function openTab(i) {
@@ -350,7 +349,7 @@ function getById(element) {
     return document.getElementById(element);
 }
 
-// 
+// returns html collection
 function getClasses(el) {
     return document.getElementsByClassName(el);
 }
