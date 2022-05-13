@@ -144,12 +144,8 @@ async function handlePokemonSearch() {
 
     // refresh:
     pokemonDataSelection = [];
-
     // for all string-fragments: search for all matching pokemon names or IDs
     await getSearchResults(searchArr);
-
-    // remove doubles (TODO)
-
     // render results
     renderSearchResults();
 }
@@ -172,11 +168,9 @@ async function getSearchResults(searchArr) { // function still too big ?
             // namesArr.push( await ...( filterPokemonNames(searchArr[i]) ) ); // fkt? nope
             let foundNames = await filterPokemonNames(searchArr[i]);
             namesArr.push(...foundNames); //spread-operator (because I need to push content of array 1 into array 2 at the same level)
-            // console.log('check1: ',namesArr[0]);
             // for all found pokemon names:
             for (let i = 0; i < namesArr.length; i++) {
                 let el = namesArr[i].name;
-                // console.log('check2 - name: ',namesArr[i].name);
                 await searchPokemon(el);
                 extractData();
             }
@@ -205,7 +199,6 @@ function handleFavourites(pokemon) { // AE: favOrites !! change for consistency
     } else {
         favourites.splice(index, 1);
     }
-    // TODO: save & get favourites in & from local storage
     saveDataLocally();
 }
 
@@ -228,18 +221,17 @@ async function getFavourites() {
         extractData();
     }
     renderSearchResults();
-    // renderViewLink(); TODO
-}
-// TODO
-function renderViewLink(){
-    getById('view-link').innerHTML='All Pokemons' // Favorites //onclick =goBack() (to currentURL)
-
+    // show(getById('back-link'));
+    hide(getById('fav-link'));
+    // getById('back-link').innerHTML = '';
 }
 
 function renderSearchResults() {
     // td.: error - case
     renderCards();
     renderBackBtn();
+    show(getById('back-link'));
+    //getById('back-link').innerHTML = '<a id="fav-link" href="#" onclick="goBack()">Back</a>';
 }
 
 function renderBackBtn() {
@@ -276,13 +268,14 @@ function renderDetailCard(name) {
 }
 
 function toggleOverlay() {
-    // getById('modal-overlay').classList.toggle('d-none');
     toggleElement(getById('modal-overlay')); // zu viel des guten ???
     getElement('body').classList.toggle('no-scroll');
 }
 
 function goBack() {
     loadPokemons(currentUrl);
+    show(getById('fav-link'));
+    hide(getById('back-link'));
 }
 
 function openTab(i) {
@@ -294,7 +287,6 @@ function openTab(i) {
         links[index].classList.remove('active-tablink');
     }
 
-    //tabs[i].classList.remove('d-none');
     show(tabs[i]);
     links[i].classList.add('active-tablink');
 }
