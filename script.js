@@ -118,15 +118,17 @@ function getPokemonDetails(name) {
     return pokemon;
 }
 
-async function loadNext() { // TODO/ achtung BUG: wenn zB 2x geklickt lädt es pokemons doppelt !!!
+async function loadNext() {
     if (pokemons.next) {
-        await loadPokemons(pokemons.next);
+        let nextURL = pokemons.next.split('limit=')[0] + 'limit=' + limit; //set new limit in case user changed it
+        await loadPokemons(nextURL);
     }
 }
 
 async function loadPrevious() {
     if (pokemons.previous) {
-        await loadPokemons(pokemons.previous);
+        let previousURL = pokemons.previous.split('limit=')[0] + 'limit=' + limit;
+        await loadPokemons(previousURL);
     }
 }
 
@@ -140,16 +142,12 @@ async function handleTypesSearch() {
     /*in progress*/ }
 
 async function handlePokemonSearch() {
-    let searchArr = [],
-        searchStr;
-
+    let searchArr = [];
+    let searchStr;
     // search string bearbeiten
     searchStr = getById('search-text').value;
     searchArr = editSearchString(searchStr);
-
-    // TODO: empty input - field
     renderLoader();
-    // refresh:
     pokemonDataSelection = [];
     // for all string-fragments: search for all matching pokemon names or IDs
     await getSearchResults(searchArr);
@@ -159,7 +157,7 @@ async function handlePokemonSearch() {
 
 function editSearchString(str) {
     let searchStr = str.toLowerCase();
-    return searchStr.split(' '); // return array with search strings
+    return searchStr.split(' '); // returns array with search strings
 }
 
 async function getSearchResults(searchArr) { // function still too big ?
@@ -170,7 +168,7 @@ async function getSearchResults(searchArr) { // function still too big ?
         if (!isNaN(searchArr[i] * 1)) {
             await searchPokemon(searchArr[i]);
             extractData();
-            // case: name/string
+        // case: name/string
         } else {
             // namesArr.push( await ...( filterPokemonNames(searchArr[i]) ) ); // fkt? nope
             let foundNames = await filterPokemonNames(searchArr[i]);
@@ -254,6 +252,8 @@ function renderPaginationLinks() {
 
 function renderCards() {
     let container = getById('cards-container');
+    let searchField = getById('search-text').value = '';
+
     container.innerHTML = '';
     if (pokemonDataSelection < 1) {
         container.innerHTML = ' <h4 style="padding-top:3rem;"> No data found </h4> ';
@@ -263,13 +263,13 @@ function renderCards() {
         let pokemon = pokemonDataSelection[i];
         cardTemplate(container, pokemon);
     }
-    renderPaginationLinks(); /* TODO ausblenden wenn kein prev/next existiert */
-    // TODO fav-icons add classs for favorites
+    renderPaginationLinks();
+
 }
 
 function renderDetailCard(name) {
     let overlay = getById('modal-overlay');
-    // 1. load/get pokemon info: set currentPokemon (OR get Info from pokemonDataSelection?)
+    // 1. load pokemon info
     let pokemon = getPokemonDetails(name);
     // 2. render card
     detailCardTemplate(overlay, pokemon);
