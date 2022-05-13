@@ -129,9 +129,9 @@ function paginationLinksTemplate(element) {
         <button onclick="loadPrevious()">
             &#10096; prev. ${limit}
         </button> |
-        <button onclick="lazyLoadAll()">
+        <!-- <button onclick="loadAll()">
             SHOW ALL
-        </button> |
+        </button> | -->
         <button onclick="loadNext()">
             next ${limit} &#10095;
         </button>

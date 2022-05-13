@@ -380,11 +380,28 @@ ul li {
 }
 
 /* pagination links */
-#pagination-links {
+#pagination-links{
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1.5rem;
+    padding: 0.5rem;
+}
+
+.change-limit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-bottom: 2rem;
+}
+
+.change-limit label{
+    cursor: pointer;
+}
+
+.change-limit input {
+    width: 2rem;
 }
 
 #pagination-links button {

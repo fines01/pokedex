@@ -24,7 +24,7 @@ async function loadPokemons(url = apiURL) {
 }
 
 function renderLoader() {
-    console.log('catching Pokemons...');
+    console.log('catching pokemons...');
     getById('cards-container').innerHTML = '<div id="loader"><img src="img/pokeball2.png" alt=""></div>';
 }
 
@@ -297,6 +297,11 @@ function openTab(i) {
 
     show(tabs[i]);
     links[i].classList.add('active-tablink');
+}
+
+function setLimit() {
+    limit = getById('limit').value;
+    renderPaginationLinks();
 }
 
 // generic functions:
