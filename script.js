@@ -42,7 +42,7 @@ function extractData() {
     if (alreadyExtracted.length < 1) {
 
         let [id,name,height,weight] = extractBaseData('id','name','height','weight');
-        let [types, abilities, moves] = extractBasedataArrays(['types','type'], ['abilities','ability'],['moves','move']);
+        let [types, abilities, moves] = extractBaseDataArrays(['types', 'type'], ['abilities', 'ability'], ['moves', 'move']);
         
         // convert height & weight units
         height = Math.round(height * 10) / 100; // height from dm in m, rounded to max 2 dec
@@ -77,7 +77,7 @@ function extractBaseData(...labels){
 // }
 
 //// NEW and shiny with array deconstruction
-function extractBasedataArrays(...labelsArr){
+function extractBaseDataArrays(...labelsArr){
     let dataArr=[]
     for (let i = 0; i < labelsArr.length; i++) {
         let arrName = labelsArr[i][0];

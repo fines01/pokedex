@@ -67,7 +67,7 @@ p {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 2;
+    z-index: 5;
     background-color: rgba(0, 0, 0, 0.5);
     background-color: rgba(168, 248, 221, 0.8);
     display: flex;
@@ -182,6 +182,20 @@ nav {
     outline: none;
     color: white;
 }
+
+/* #poke-img {
+-    width:100%;
+-}
+-
+-.img-box {
+-    position: absolute;
+-    right: -25%;
+-    bottom: -25%;
+-    z-index: 1;
+-    width:50%;
+-    height:auto;
+-    object-fit:cover;
+-} */
 
 /* *** pokedex card big  *** */
 
