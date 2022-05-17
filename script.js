@@ -260,11 +260,13 @@ function renderSearchResults() {
 function renderBackBtn() {
     // render btn which leads to previous pokemon-card-page.
     element = getById('pagination-links');
+    element.classList.add('padding-0');
     backBtnTemplate(element);
 }
 
 function renderPaginationLinks() {
     paginationLinksTemplate(getById('pagination-links'));
+    getById('pagination-links').classList.remove('padding-0');
 }
 
 function renderCards() {

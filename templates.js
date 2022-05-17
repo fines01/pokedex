@@ -19,6 +19,7 @@ function detailCardTemplate(element, pokemon) {
     element.innerHTML = /*html*/ `
         <div id="pokedex" class="" onclick="event.stopPropagation()">
             <div id="poke-title" style="background-color: var(--col-${pokemon.types[0]})">
+            <span class="close-details" onclick="toggleOverlay()">X</span>
                 <div class="column">
                     <h1 id="pokemon-name">${pokemon.name}</h1>
                     <h3>Type:</h3>
@@ -117,6 +118,7 @@ function renderStats(stats) {
 
 function paginationLinksTemplate(element) {
     element.innerHTML = /*html*/ `
+    <div>
         <button onclick="loadPrevious()">
             &#10096; prev. ${limit}
         </button> |
@@ -126,9 +128,16 @@ function paginationLinksTemplate(element) {
         <button onclick="loadNext()">
             next ${limit} &#10095;
         </button>
+    </div>
+        <!-- <br> -->
+        <!-- change-limit input -->
+        <div class="change-limit">
+            <label for="limit" onclick="toggleElement(getById('limit'))">Change limit</label>
+            <input type="number" id="limit" value="18" class="d-none" onchange="setLimit()">
+        </div>
     `;
 }
 
 function backBtnTemplate(element) {
-    element.innerHTML = /*html*/ ` <button onclick="goBack()">Go Back</button>`;
+    element.innerHTML = /*html*/ ` <button onclick="goBack()" class="">Go Back</button>`;
 }

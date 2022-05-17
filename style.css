@@ -183,22 +183,6 @@ nav {
     color: white;
 }
 
-/* #poke-img {
--    width:100%;
--}
--
--.img-box {
--    position: absolute;
--    right: -25%;
--    bottom: -25%;
--    z-index: 1;
--    width:50%;
--    height:auto;
--    object-fit:cover;
--} */
-
-/* *** pokedex card big  *** */
-
 img {
     max-width: 100%;
     height: auto;
@@ -207,7 +191,9 @@ img {
 #pokedex {
     width: 365px;
     min-height: 50vh;
+    max-height:100vh;
     border-radius: 4px;
+    position: relative;
 }
 
 #poke-title {
@@ -220,6 +206,28 @@ img {
     display: flex;
     padding: 0.5rem 2rem 3rem 2rem;
     gap: 1rem;
+}
+
+.close-details {
+    /* display: flex; */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: -4px; top: -4px;
+    border-radius: 50%;
+    background-color: gray;
+    opacity: 0.7;
+    padding: 4px 12px;
+    text-transform: lowercase;
+    font-size: 1.6rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-details span{
+    padding: 0;
+    margin:0;
 }
 
 .column {
@@ -314,8 +322,10 @@ ul li {
 }
 
 .moves {
+    margin-top: 0.5rem;
     padding: 4px;
-    height: 15vh;
+    max-height: 15vh;
+    height:85px;
     overflow-y: auto;
     color: gray;
     background-color: rgb(120, 120, 120, 0.2);
@@ -444,10 +454,12 @@ ul li {
     /* element "hochziehen": negative margins*/
     padding: 2rem;
     position: relative;
+    border: 2px solid black;
 
     /* test */
-    min-height: 50vh;
-    height: 57vh; /* better fixed height*/
+    /* min-height: 50vh; */
+    max-height: 57vh; /* better fixed height*/
+    height:370px;
     overflow-y: auto;
 }
 
@@ -470,6 +482,9 @@ ul li {
     justify-content: center;
     align-items: center;
     padding: 0.5rem;
+    padding-bottom: 1rem;
+    flex-direction: column;
+    height:130px;
 }
 
 .change-limit {
@@ -479,6 +494,7 @@ ul li {
     flex-direction: column;
     gap: 0.5rem;
     padding-bottom: 2rem;
+    position: relative;
 }
 
 .change-limit label{
@@ -487,6 +503,8 @@ ul li {
 
 .change-limit input {
     width: 2rem;
+    position: absolute;
+    bottom: -0.5rem;
 }
 
 #pagination-links button {
@@ -497,6 +515,10 @@ ul li {
     font-weight: bold;
     margin: 1rem;
     font-size: 1rem;
+}
+
+.padding-0{
+    padding: 0 !important;
 }
 
 /* *** footer *** */
@@ -590,13 +612,13 @@ footer {
 }
 
 @media (max-width: 770px){
-    nav {
+    /* nav {
         font-size: 0.9rem;
-    }
+    } */
 
-    .logo {
+    /* .logo {
         height: 1.5rem;
-    }
+    } */
 
     .nav-links {
         width:25%;
@@ -632,4 +654,108 @@ footer {
     ::placeholder {
         color: rgb(219, 219, 219);
     }
+
+    #poke-img {
+        min-width: 150px;
+        max-height: 180px;
+    }
+
+    /* 
+    .moves {
+        height: 80px;
+        margin-top: 0.5rem;
+    }
+
+    .poke-info {
+        height: 370px;
+        margin-top: -45px;
+        /*element "hochziehen": negative margins
+        padding: 2rem;
+        /* min-height: 50vh;
+        max-height: 57vh;
+        /* better fixed height?
+    }
+
+    #poke-img {
+        min-width: 150px;
+        max-height: 180px;
+
+        top: 0;
+        bottom: 0;
+        right: -3rem;
+        /* left: 70%;
+        z-index: 1;
+    }
+
+    */
 }
+
+@media (max-width: 500px){
+
+    .poke-info,  #poke-title{
+        font-size: 0.9rem;
+    }
+
+    .poke-info {
+        height: 330px;
+    }
+
+    #poke-img {
+        right: -1rem;
+    }
+
+    #poke-img {
+        min-width: 120px;
+        max-height: 150px;
+    }
+}
+
+@media (max-width:450px){
+    #poke-img {
+        right: 0.5rem;
+        top: 1rem;
+    }
+
+    .close-details {
+        display: flex;
+    }
+}
+
+@media (max-width: 350px){
+
+    html {
+        font-size: 0.9rem;
+    }
+
+    #pokedex {
+        height:100vh;
+    }
+
+    .close-details{
+        top:-1px;left:-1px;
+        font-size: 1.5rem;
+        border-radius: 0 40% 40% 0;
+        padding: 4px 12px 4px 8px;
+    }
+
+    #poke-title{
+        border-radius:0;
+        padding-left:1.5rem;
+        padding-right:1.5rem;
+    }
+
+    .poke-info{
+        height: 100%;
+        border: none;
+        border-radius:0;
+        margin-top:0;
+        padding: 1.5rem;
+    }
+
+    #poke-img:hover{
+        transform: scale(1);
+        z-index: inherit;
+    }
+}
+
+/* media-queries for HEIGHT (see: MS lumia 550) */
