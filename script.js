@@ -1,5 +1,5 @@
 let currentPokemon, pokemonDataSelection = [],
-    pokemons, currentUrl, favourites = [];
+    pokemons, currentUrl, favorites = [];
 let endpoint = 'pokemon';
 let limit = 18;
 let apiURL = `https://pokeapi.co/api/v2/${endpoint}?limit=${limit}`;
@@ -22,11 +22,6 @@ async function loadPokemons(url = apiURL) {
         renderCards();
         currentUrl = url;
     }
-}
-
-function renderLoader() {
-    console.log('Catching Pokémon...');
-    getById('cards-container').innerHTML = '<div id="loader"><img src="img/pokeball2.png" alt=""></div>';
 }
 
 // load single pokemon
@@ -213,91 +208,43 @@ async function filterPokemonNames(str) {
 
 async function filterPokemonTypes(str) {/*in progress*/}
 
-function handleFavourites(pokemon) { // oops AE: favOrites !! change for consistency
+function handleFavorites(pokemon) {
     let icon = getById('fav-' + pokemon);
     // toggle icon fav view
     icon.classList.toggle('add-fav');
-    // add to or remove from favourites-collection
-    let index = favourites.indexOf(pokemon);
+    // add to or remove from favorites-collection
+    let index = favorites.indexOf(pokemon);
     if (index == -1) {
-        favourites.push(pokemon);
+        favorites.push(pokemon);
     } else {
-        favourites.splice(index, 1);
+        favorites.splice(index, 1);
     }
     saveDataLocally();
+    //if(getClasses('fav-link')[0].classList.contains('d-none')){getFavorites()}
 }
 
 function saveDataLocally(){
-    let favouritesStr = JSON.stringify(favourites);
-    localStorage.setItem('favouritePokemons', favouritesStr);
+    let favoritesStr = JSON.stringify(favorites);
+    localStorage.setItem('favouritePokemons', favoritesStr);
 }
 
 function loadLocalData(){
-    let favouritesStr = localStorage.getItem('favouritePokemons');
-    if(favouritesStr){
-        favourites = JSON.parse(favouritesStr);
+    let favoritesStr = localStorage.getItem('favouritePokemons');
+    if(favoritesStr){
+        favorites = JSON.parse(favoritesStr);
     }
 }
 
-async function getFavourites() {
+async function getFavorites() {
     renderLoader();
     pokemonDataSelection = [];
-    for (let i = 0; i < favourites.length; i++) {
-        await searchPokemon(favourites[i]);
+    for (let i = 0; i < favorites.length; i++) {
+        await searchPokemon(favorites[i]);
         extractData();
     }
     renderSearchResults();
     // hide(getById('fav-link'));
     hide(...(getClasses('fav-link')));
-}
-
-function renderSearchResults() {
-    // td.: error - case
-    renderCards();
-    renderBackBtn();
-    // show(getById('back-link'));
-    show(...(getClasses('back-link')));
-}
-
-function renderBackBtn() {
-    // render btn which leads to previous pokemon-card-page.
-    element = getById('pagination-links');
-    element.classList.add('padding-0');
-    backBtnTemplate(element);
-}
-
-function renderPaginationLinks() {
-    paginationLinksTemplate(getById('pagination-links'));
-    getById('pagination-links').classList.remove('padding-0');
-    let nextPokemonsLink = getById('next-btn');
-    let prevPokemonsLink = getById('prev-btn');
-    (pokemons.next) ? nextPokemonsLink.classList.remove('disable-link'): nextPokemonsLink.classList.add('disable-link');
-    (pokemons.previous) ? prevPokemonsLink.classList.remove('disable-link'): prevPokemonsLink.classList.add('disable-link');
-}
-
-function renderCards() {
-    let container = getById('cards-container');
-    let searchField = getById('search-text').value = ''; //TODO via getClasses für alle isearch-inputs
-
-    container.innerHTML = '';
-    if (pokemonDataSelection < 1) {
-        container.innerHTML = ' <h4 style="padding-top:3rem;"> No data found </h4> ';
-    }
-    //load pokemon infos
-    for (let i = 0; i < pokemonDataSelection.length; i++) {
-        let pokemon = pokemonDataSelection[i];
-        cardTemplate(container, pokemon);
-    }
-    renderPaginationLinks();
-
-}
-
-function renderDetailCard(name) {
-    let overlay = getById('modal-overlay');
-    // 1. load pokemon info
-    let pokemon = getPokemonDetails(name);
-    // 2. render card
-    detailCardTemplate(overlay, pokemon);
 }
 
 function toggleOverlay() {
@@ -350,8 +297,7 @@ function handleKeypresses() {
     });
 }
 
-
-// generic functions:
+// general functions:
 
 function toggleElement(...elements) {
     for (let i = 0; i < elements.length; i++) {

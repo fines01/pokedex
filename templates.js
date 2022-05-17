@@ -67,53 +67,17 @@ function detailCardTemplate(element, pokemon) {
     `;
 }
 
-function renderFavIcon(pokemonName){
-    if (favourites.indexOf(pokemonName) != -1){
-        return ` <img id="fav-${pokemonName}" class="add-icon add-fav" onclick="event.stopPropagation(); handleFavourites('${pokemonName}')" src="img/add.ico" alt="add pokemon icon">`;
-    }
-    return ` <img id="fav-${pokemonName}" class="add-icon" onclick="event.stopPropagation(); handleFavourites('${pokemonName}')" src="img/add.ico" alt="add pokemon icon"></img>`;
+function statsListTemplate(stats, i) {
+    return /*html*/ `
+        <li><span class="">${stats[i].name}:</span><span>${stats[i].value} / 255</span></li> `
 }
 
-function renderMoves(moves) {
-    let str = '';
-    for (let i = 0; i < moves.length; i++) {
-        str += /*html*/ `<span class="move">${moves[i]}</span> `;
-    }
-    return str;
-}
-
-function renderAbilities(abilities){
-    str = '';
-    for (let i = 0; i < abilities.length; i++){
-        str+=/*html*/`<span class="ability">${abilities[i]}</span><br>`;
-    }
-    return str;
-}
-
-function renderTypes(types) {
-    let str = '';
-        for (let i = 0; i < types.length; i++) {
-            str += /*html*/ ` 
-            <span style="background-color: var(--col-${types[i]})">${types[i]}</span> 
-        `;
-        };
-    return str;
-}
-
-function renderStats(stats) {
-    let str = ``, total = 0, average;
-    for (let i = 0; i < stats.length; i++) {
-        str += /*html*/ `
-        <li><span class="">${stats[i].name}:</span><span>${stats[i].value} / 255</span></li> `;
-        total += stats[i].value;
-    }
-    average = Math.round((total / stats.length)*100)/100;
-    str += /*html*/`
+function statsAverageTemplate(total, average) {
+    return /*html*/ `
         <hr>
         <li><span>Total:</span><span><b>${total}</b></span></li>
         <li><span>Average:</span><span><b>${average}</b> / 255</span></li>
-        `;
-    return str;
+    `;
 }
 
 function paginationLinksTemplate(element) {

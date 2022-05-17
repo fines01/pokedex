@@ -36,21 +36,21 @@
             </div>
             <div class="nav-content nav-links">
                 <a id="" class="back-link d-none" href="#" onclick="goBack()">Back</a>
-                <a id="" class="fav-link" href="#" onclick="getFavourites()">Favorites</a>
+                <a id="" class="fav-link" href="#" onclick="getFavorites()">Favorites</a>
             </div>
             <img src="img/menu-white.png" alt="toggle menu icon" class="toggle-menu-icon" onclick="toggleElement(getById('mobile-menu'))">
         </nav>
         <!-- mobile navbar -->
         <nav id="mobile-menu" class="d-none">
             <a id="" class="back-link d-none" href="#" onclick="goBack()">Back</a>
-            <a id="" class="fav-link" href="#" onclick="getFavourites()">Favorites</a>
+            <a id="" class="fav-link" href="#" onclick="getFavorites()">Favorites</a>
             <div id="searchbar-mobile" class="flex f-center">
                 <input id="" class="search-string" type="text" placeholder="search pokemon...">
                 <img src="img/search-32-white.ico" alt="search icon" class="search-icon" onclick="handlePokemonSearch()">
             </div>
         </nav>
         <!-- modal -->
-        <div id="modal-overlay" class="d-none" onclick="toggleOverlay()" onkeydown="handleEscKey()"></div>
+        <div id="modal-overlay" class="d-none" onclick="toggleOverlay()"></div>
         <!-- pokemon cards -->
         <div id="cards-container">
             <div id="loader"><img src="img/pokeball2.png" alt=""></div>
