@@ -1,7 +1,7 @@
 let currentPokemon, pokemonDataSelection = [],
     pokemons, currentUrl, favorites = [];
 let endpoint = 'pokemon';
-let limit = 18;
+let limit = 21;
 let apiURL = `https://pokeapi.co/api/v2/${endpoint}?limit=${limit}`;
 let loading = false;
 
@@ -38,8 +38,7 @@ function extractData() {
         let [id,name,height,weight] = extractBaseData('id','name','height','weight');
         let [types, abilities, moves] = extractBaseDataArrays(['types', 'type'], ['abilities', 'ability'], ['moves', 'move']);
         // convert height & weight units
-        height = Math.round(height * 10) / 100; // height from dm in m, rounded to max 2 dec
-        weight = Math.round(weight * 10) / 100; // weight from hg in kg, rounded to max 2 dec
+        [height, weight] = convertUnits(height, weight);
         let imgSrc = extractImg();
         let stats = extractStats();
         // save Pokemon object:
@@ -50,19 +49,19 @@ function extractData() {
     }
 }
 
-function extractBaseData(...labels){
+function extractBaseData(...dataSet){
     let dataArr = [];
-    for (let i = 0; i < labels.length; i++) {
-        dataArr.push(currentPokemon[labels[i]])
+    for (let i = 0; i < dataSet.length; i++) {
+        dataArr.push(currentPokemon[dataSet[i]])
     }
     return dataArr;
 }
 
-function extractBaseDataArrays(...labelsArr){
+function extractBaseDataArrays(...dataSetArr){
     let dataArr=[]
-    for (let i = 0; i < labelsArr.length; i++) {
-        let arrName = labelsArr[i][0];
-        let dataName = labelsArr[i][1];
+    for (let i = 0; i < dataSetArr.length; i++) {
+        let arrName = dataSetArr[i][0];
+        let dataName = dataSetArr[i][1];
 
         let singleDataArr=[];
         for (let i = 0; i < currentPokemon[arrName].length; i++) {
@@ -96,6 +95,17 @@ function extractStats(){
         });
     }
     return stats;
+}
+
+// converts height and weight from dm in m and hg in kg, rounded to max 2 dec
+function convertUnits(...dataSet) {
+    let dataArr = [];
+    for (let i = 0; i < dataSet.length; i++) {
+        let element = dataSet[i];
+        element = Math.round(element * 10) / 100; // 
+        dataArr.push(element);
+    }
+    return (dataArr);
 }
 
 // extract and tmp save data from API
