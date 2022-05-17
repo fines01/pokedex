@@ -8,6 +8,16 @@ let loading = false;
 function init() {
     loadLocalData();
     loadPokemons();
+    handleKeypresses();
+}
+
+function handleEscKey(event) {
+    getById('modal-overlay').addEventListener('keydown', function(event){
+        console.log(event.key, event.code);
+            if (getById('overlay-overlay')){
+                toggle('overlay-overlay');
+            }
+    });
 }
 
 // load Pokemons from API
@@ -67,16 +77,6 @@ function extractBaseData(...labels){
     return dataArr;
 }
 
-//// OLD and lame function:
-// function extractBaseDataArray(arrayLabel, label) {
-//     let dataArr = []
-//     for (let i = 0; i < currentPokemon[arrayLabel].length; i++) {
-//         dataArr.push(currentPokemon[arrayLabel][i][label]['name']);
-//     }
-//     return dataArr;
-// }
-
-//// NEW and shiny with array deconstruction
 function extractBaseDataArrays(...labelsArr){
     let dataArr=[]
     for (let i = 0; i < labelsArr.length; i++) {
@@ -326,6 +326,19 @@ function setLimit() {
     limit = getById('limit').value;
     renderPaginationLinks();
 }
+
+function handleKeypresses() {
+    window.addEventListener('keydown', function (event) {
+        console.log(event.code);
+        if (event.code == 'Escape' && !getById('modal-overlay').classList.contains('d-none')) {
+            toggleElement(getById('modal-overlay'));
+        }
+        if (event.code == 'Enter') {
+            handlePokemonSearch();
+        }
+    });
+}
+
 
 // generic functions:
 

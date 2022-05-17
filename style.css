@@ -214,7 +214,7 @@ img {
     justify-content: center;
     align-items: center;
     position: absolute;
-    left: -4px; top: -4px;
+    left: -8px; top: -8px;
     border-radius: 50%;
     background-color: gray;
     opacity: 0.7;
@@ -223,6 +223,11 @@ img {
     font-size: 1.6rem;
     font-weight: bold;
     cursor: pointer;
+    transition: all 225ms linear;
+}
+
+.close-details:hover{
+    transform: scale(1.2);
 }
 
 .close-details span{
@@ -660,34 +665,6 @@ footer {
         max-height: 180px;
     }
 
-    /* 
-    .moves {
-        height: 80px;
-        margin-top: 0.5rem;
-    }
-
-    .poke-info {
-        height: 370px;
-        margin-top: -45px;
-        /*element "hochziehen": negative margins
-        padding: 2rem;
-        /* min-height: 50vh;
-        max-height: 57vh;
-        /* better fixed height?
-    }
-
-    #poke-img {
-        min-width: 150px;
-        max-height: 180px;
-
-        top: 0;
-        bottom: 0;
-        right: -3rem;
-        /* left: 70%;
-        z-index: 1;
-    }
-
-    */
 }
 
 @media (max-width: 500px){
@@ -721,7 +698,7 @@ footer {
     }
 }
 
-@media (max-width: 350px){
+@media (max-width: 360px){
 
     html {
         font-size: 0.9rem;
@@ -732,7 +709,7 @@ footer {
     }
 
     .close-details{
-        top:-1px;left:-1px;
+        top:0px;left:0px;
         font-size: 1.5rem;
         border-radius: 0 40% 40% 0;
         padding: 4px 12px 4px 8px;
@@ -740,6 +717,7 @@ footer {
 
     #poke-title{
         border-radius:0;
+        padding-top: 1.5rem;
         padding-left:1.5rem;
         padding-right:1.5rem;
     }
