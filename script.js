@@ -62,7 +62,6 @@ function extractBaseDataArrays(...dataSetArr){
     for (let i = 0; i < dataSetArr.length; i++) {
         let arrName = dataSetArr[i][0];
         let dataName = dataSetArr[i][1];
-
         let singleDataArr=[];
         for (let i = 0; i < currentPokemon[arrName].length; i++) {
             singleDataArr.push(currentPokemon[arrName][i][dataName]['name']);
@@ -171,6 +170,7 @@ function preventEmptyString(str){
     let zeroSpacesStr = str.replace(/ /g, ''); //TEST: remove ALL ' ' spaces
     if (zeroSpacesStr.length == 0){
         addBlinkAnimation(...(getClasses('search-string'))); //passes an HTML-Collection and spreads values
+        clearInputValues(...(getClasses('search-string')));
         return false;
     }
     return true;
@@ -178,28 +178,47 @@ function preventEmptyString(str){
 
 function editSearchString(str) {
     let searchStr = str.toLowerCase();
-    return searchStr.split(' '); // returns array with search strings
+    let searchArr = searchStr.split(' ');
+    return removeEmptyValues(searchArr); // returns cleared array with search strings
+}
+
+function removeEmptyValues(arr){
+    let cleanedArr = [];
+    for (let i = 0; i < arr.length; i++) {
+        (arr[i] && arr[i] != ' ') && cleanedArr.push(arr[i]);
+    }
+    return cleanedArr;
 }
 
 async function getSearchResults(searchArr) { // function still too big ?
-    let namesArr = [];
     // for all string-fragments: search for all matching pokemon names or IDs
     for (let i = 0; i < searchArr.length; i++) {
         // case: id 
         if (!isNaN(searchArr[i] * 1)) {
-            await searchPokemon(searchArr[i]);
-            extractData();
+            await getIdsSearchResult(searchArr[i]);
         // case: name/string
         } else {
-            let foundNames = await filterPokemonNames(searchArr[i]);
-            namesArr.push(...foundNames); //spread-operator (because I need to push content of array 1 into array 2 at the same level)
-            // for all found pokemon names:
-            for (let i = 0; i < namesArr.length; i++) {
-                let el = namesArr[i].name;
-                await searchPokemon(el);
-                extractData();
-            }
+            await getNamesSearchResults(searchArr[i]);
         }
+    }
+}
+
+async function getIdsSearchResult(id){
+    if (id > 0) {
+        await searchPokemon(id);
+        extractData();
+    }
+}
+
+async function getNamesSearchResults(nameStr){
+    let namesArr = [];
+    let foundNames = await filterPokemonNames(nameStr);
+    namesArr.push(...foundNames); //spread-operator (because I need to push content of array 1 into array 2 at the same level)
+    // for all found pokemon names:
+    for (let i = 0; i < namesArr.length; i++) {
+        let el = namesArr[i].name;
+        await searchPokemon(el);
+        extractData();
     }
 }
 
@@ -305,6 +324,12 @@ function handleKeypresses() {
             handlePokemonSearch();
         }
     });
+}
+
+function clearInputValues(...elements) {
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].value = '';
+    }
 }
 
 // general functions:
