@@ -11,22 +11,13 @@ function init() {
     handleKeypresses();
 }
 
-function handleEscKey(event) {
-    getById('modal-overlay').addEventListener('keydown', function(event){
-        console.log(event.key, event.code);
-            if (getById('overlay-overlay')){
-                toggle('overlay-overlay');
-            }
-    });
-}
-
 // load Pokemons from API
 async function loadPokemons(url = apiURL) {
     if (!loading) {
         loading = true;
-        renderLoader(); // mb also disable pagination-links while loading (instead or add let loading )?
+        renderLoader(); // show loader until data is fetched
         let response = await fetch(url);
-        pokemons = await response.json(); // [results, next, previous], results: --> [{"name", "url"}]
+        pokemons = await response.json(); // Data-strukt: [results, next, previous], results: --> [{"name", "url"}]
         await savePokemonData(); // await until promise returns its result
         renderCards();
         currentUrl = url;
@@ -34,7 +25,7 @@ async function loadPokemons(url = apiURL) {
 }
 
 function renderLoader() {
-    console.log('catching pokemons...');
+    console.log('Catching Pokémon...');
     getById('cards-container').innerHTML = '<div id="loader"><img src="img/pokeball2.png" alt=""></div>';
 }
 
@@ -44,23 +35,18 @@ async function loadTargetPokemon(src) {
     currentPokemon = await response.json();
 }
 
-// extract relavant data of currently loaded pokemon and add to pokemonDataSelection array
+// extract data of interest from currently loaded pokemon and add to pokemonDataSelection array
 function extractData() {
     // prevent doubles
     let alreadyExtracted = pokemonDataSelection.filter(poke => poke.id == currentPokemon['id']);
-
     if (alreadyExtracted.length < 1) {
-
         let [id,name,height,weight] = extractBaseData('id','name','height','weight');
         let [types, abilities, moves] = extractBaseDataArrays(['types', 'type'], ['abilities', 'ability'], ['moves', 'move']);
-        
         // convert height & weight units
         height = Math.round(height * 10) / 100; // height from dm in m, rounded to max 2 dec
         weight = Math.round(weight * 10) / 100; // weight from hg in kg, rounded to max 2 dec
-        
         let imgSrc = extractImg();
         let stats = extractStats();
-
         // save Pokemon object:
         pokemonDataSelection.push(
             {
@@ -102,7 +88,7 @@ function extractImg() {
         // second back-up
         pokemonImg = currentPokemon['sprites']['front_default']; // for pokemons > 1000 still no img found sometimes (see: all pikachu*) TODO: placeholder-img or d-none img
     }
-    // TODO if (!pokemonImg: hide img or replacement img)
+    // TODO if (!pokemonImg: hide img or replacement img) ?
     return pokemonImg;
 }
 
@@ -121,7 +107,6 @@ function extractStats(){
 async function savePokemonData() {
     // refresh
     pokemonDataSelection = [];
-
     for (let i = 0; i < pokemons.results.length; i++) {
         let pokemonURL = pokemons.results[i].url;
         await loadTargetPokemon(pokemonURL); // loadTargetPokemon sets currentPokemon
@@ -132,7 +117,7 @@ async function savePokemonData() {
 }
 
 function getPokemonDetails(name) {
-    // find pokemon by name from current pokemonDataSelection array
+    // find pokemon by name from current pokemonDataSelection array and return full pokemon object
     let pokemon = pokemonDataSelection.find(x => x.name == name);
     return pokemon;
 }
@@ -165,13 +150,25 @@ async function handlePokemonSearch() {
     let searchStr;
     // search string bearbeiten
     searchStr = (getClasses('search-string')[0].value != '') ? getClasses('search-string')[0].value : getClasses('search-string')[1].value;
-    searchArr = editSearchString(searchStr);
-    renderLoader();
-    pokemonDataSelection = [];
-    // for all string-fragments: search for all matching pokemon names or IDs
-    await getSearchResults(searchArr);
-    // render results
-    renderSearchResults();
+    // validate & notification? if ( validateSearchStr() ){}
+    if (preventEmptyString(searchStr)){
+        searchArr = editSearchString(searchStr);
+        renderLoader();
+        pokemonDataSelection = [];
+        // for all string-fragments: search for all matching pokemon names or IDs
+        await getSearchResults(searchArr);
+        // render results
+        renderSearchResults();
+    }
+}
+
+function preventEmptyString(str){
+    let zeroSpacesStr = str.replace(/ /g, ''); //TEST: remove ALL ' ' spaces
+    if (zeroSpacesStr.length == 0){
+        addBlinkAnimation(...(getClasses('search-string'))); //passes an HTML-Collection and spreads values
+        return false;
+    }
+    return true;
 }
 
 function editSearchString(str) {
@@ -189,7 +186,6 @@ async function getSearchResults(searchArr) { // function still too big ?
             extractData();
         // case: name/string
         } else {
-            // namesArr.push( await ...( filterPokemonNames(searchArr[i]) ) ); // fkt? nope
             let foundNames = await filterPokemonNames(searchArr[i]);
             namesArr.push(...foundNames); //spread-operator (because I need to push content of array 1 into array 2 at the same level)
             // for all found pokemon names:
@@ -205,7 +201,13 @@ async function getSearchResults(searchArr) { // function still too big ?
 async function filterPokemonNames(str) {
     let response = await fetch(`https://pokeapi.co/api/v2/${endpoint}?limit=5000`);
     let allPokemons = await response.json();
-    let foundNames = await allPokemons.results.filter(poke => poke.name.includes(str));
+    let foundNames;
+    // if only one character is given, only Pokemons whose names BEGIN with the given character will be searched for
+    if (str.length > 1){
+        foundNames = await allPokemons.results.filter(poke => poke.name.includes(str));
+    } else if (str.length == 1) {
+        foundNames = await allPokemons.results.filter(poke => poke.name.startsWith(str))
+    }
     return foundNames;
 }
 
@@ -267,6 +269,10 @@ function renderBackBtn() {
 function renderPaginationLinks() {
     paginationLinksTemplate(getById('pagination-links'));
     getById('pagination-links').classList.remove('padding-0');
+    let nextPokemonsLink = getById('next-btn');
+    let prevPokemonsLink = getById('prev-btn');
+    (pokemons.next) ? nextPokemonsLink.classList.remove('disable-link'): nextPokemonsLink.classList.add('disable-link');
+    (pokemons.previous) ? prevPokemonsLink.classList.remove('disable-link'): prevPokemonsLink.classList.add('disable-link');
 }
 
 function renderCards() {
@@ -299,10 +305,6 @@ function toggleOverlay() {
     getElement('body').classList.toggle('no-scroll');
 }
 
-function toggleMenu(){
-    //toggle mobile menu
-}
-
 function goBack() {
     loadPokemons(currentUrl);
     show(...(getClasses('fav-link')));
@@ -327,9 +329,18 @@ function setLimit() {
     renderPaginationLinks();
 }
 
+// add and remove blink animation to given input-field(s)
+function addBlinkAnimation(...inputFields) {
+    for(let i = 0; i < inputFields.length; i++){
+        inputFields[i].classList.add('blink');
+        setTimeout(function () {
+            inputFields[i].classList.remove('blink');
+        }, 900);
+    }
+}
+
 function handleKeypresses() {
     window.addEventListener('keydown', function (event) {
-        console.log(event.code);
         if (event.code == 'Escape' && !getById('modal-overlay').classList.contains('d-none')) {
             toggleElement(getById('modal-overlay'));
         }

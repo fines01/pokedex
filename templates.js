@@ -119,13 +119,13 @@ function renderStats(stats) {
 function paginationLinksTemplate(element) {
     element.innerHTML = /*html*/ `
     <div>
-        <button onclick="loadPrevious()">
+        <button onclick="loadPrevious()" id="prev-btn">
             &#10096; prev. ${limit}
         </button> |
         <!-- <button onclick="loadAll()">
             SHOW ALL
         </button> | -->
-        <button onclick="loadNext()">
+        <button onclick="loadNext()" id="next-btn">
             next ${limit} &#10095;
         </button>
     </div>
@@ -133,7 +133,7 @@ function paginationLinksTemplate(element) {
         <!-- change-limit input -->
         <div class="change-limit">
             <label for="limit" onclick="toggleElement(getById('limit'))">Change limit</label>
-            <input type="number" id="limit" value="18" class="d-none" onchange="setLimit()">
+            <input type="number" min="1" max="100" id="limit" value="${limit}" class="d-none" onchange="setLimit()" onclick="event.stopPropagation()">
         </div>
     `;
 }
