@@ -99,3 +99,15 @@ function renderStats(stats) {
     str += statsAverageTemplate(total, average);
     return str;
 }
+
+async function renderFavorites() {
+    renderLoader();
+    pokemonDataSelection = [];
+    for (let i = 0; i < favorites.length; i++) {
+        await searchPokemon(favorites[i]);
+        extractData();
+    }
+    renderSearchResults();
+    // hide(getById('fav-link'));
+    hide(...(getClasses('fav-link')));
+}

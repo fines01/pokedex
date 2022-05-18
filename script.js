@@ -37,8 +37,8 @@ function extractData() {
     if (alreadyExtracted.length < 1) {
         let [id,name,height,weight] = extractBaseData('id','name','height','weight');
         let [types, abilities, moves] = extractBaseDataArrays(['types', 'type'], ['abilities', 'ability'], ['moves', 'move']);
-        // convert height & weight units
-        [height, weight] = convertUnits(height, weight);
+        // convert height & weight units: API gives height in dm and weight in hg (see documentation)
+        [height, weight] = convertHundrethsUnits(height, weight);
         let imgSrc = extractImg();
         let stats = extractStats();
         // save Pokemon object:
@@ -49,6 +49,7 @@ function extractData() {
     }
 }
 
+// or rename: 'extract first-level data'?
 function extractBaseData(...dataSet){
     let dataArr = [];
     for (let i = 0; i < dataSet.length; i++) {
@@ -57,6 +58,7 @@ function extractBaseData(...dataSet){
     return dataArr;
 }
 
+// extract first-level data arrays
 function extractBaseDataArrays(...dataSetArr){
     let dataArr=[]
     for (let i = 0; i < dataSetArr.length; i++) {
@@ -96,13 +98,13 @@ function extractStats(){
     return stats;
 }
 
-// converts height and weight from dm in m and hg in kg, rounded to max 2 dec
-function convertUnits(...dataSet) {
+// converts height and weight: from dm in m || hg in kg, rounded to max 2 dec
+function convertHundrethsUnits(...dataSet) {
     let dataArr = [];
     for (let i = 0; i < dataSet.length; i++) {
-        let element = dataSet[i];
-        element = Math.round(element * 10) / 100; // 
-        dataArr.push(element);
+        let number = dataSet[i];
+        number = Math.round(number * 10) / 100; // corresponds to: math.round( element / 100 * 100) / 100
+        dataArr.push(number);
     }
     return (dataArr);
 }
@@ -140,7 +142,7 @@ async function loadPrevious() {
     }
 }
 
-// get Pokemon by name or ID (gn id until 898?)
+// get Pokemon by name or ID (api: id-search only works for pokemons with id > 898?)
 async function searchPokemon(nameOrId) {
     let url = `https://pokeapi.co/api/v2/pokemon/${nameOrId}`;
     await loadTargetPokemon(url);
@@ -152,10 +154,8 @@ async function handleTypesSearch() {
 async function handlePokemonSearch() {
     let searchArr = [];
     let searchStr;
-    // search string bearbeiten
     searchStr = (getClasses('search-string')[0].value != '') ? getClasses('search-string')[0].value : getClasses('search-string')[1].value;
-    // validate & notification? if ( validateSearchStr() ){}
-    if (preventEmptyString(searchStr)){
+    if (preventEmptySearch(searchStr)){
         searchArr = editSearchString(searchStr);
         renderLoader();
         pokemonDataSelection = [];
@@ -166,8 +166,8 @@ async function handlePokemonSearch() {
     }
 }
 
-function preventEmptyString(str){
-    let zeroSpacesStr = str.replace(/ /g, ''); //TEST: remove ALL ' ' spaces
+function preventEmptySearch(str){
+    let zeroSpacesStr = str.replace(/ /g, ''); //regex TEST: remove ALL ' ' spaces
     if (zeroSpacesStr.length == 0){
         addBlinkAnimation(...(getClasses('search-string'))); //passes an HTML-Collection and spreads values
         clearInputValues(...(getClasses('search-string')));
@@ -190,12 +190,12 @@ function removeEmptyValues(arr){
     return cleanedArr;
 }
 
-async function getSearchResults(searchArr) { // function still too big ?
-    // for all string-fragments: search for all matching pokemon names or IDs
+// for all passed string-fragments: searches for all matching pokemon names or IDs
+async function getSearchResults(searchArr) {
     for (let i = 0; i < searchArr.length; i++) {
         // case: id 
         if (!isNaN(searchArr[i] * 1)) {
-            await getIdsSearchResult(searchArr[i]);
+            await getIdSearchResult(searchArr[i]);
         // case: name/string
         } else {
             await getNamesSearchResults(searchArr[i]);
@@ -203,8 +203,8 @@ async function getSearchResults(searchArr) { // function still too big ?
     }
 }
 
-async function getIdsSearchResult(id){
-    if (id > 0) {
+async function getIdSearchResult(id){
+    if (id > 0 && id < 899) { // because somehow id search is not workling for ids > 898
         await searchPokemon(id);
         extractData();
     }
@@ -237,6 +237,7 @@ async function filterPokemonNames(str) {
 
 async function filterPokemonTypes(str) {/*in progress*/}
 
+// remove/ add to favorites and update local storage, fav-icon
 function handleFavorites(pokemon) {
     let icon = getById('fav-' + pokemon);
     // toggle icon fav view
@@ -249,7 +250,7 @@ function handleFavorites(pokemon) {
         favorites.splice(index, 1);
     }
     saveDataLocally();
-    //if(getClasses('fav-link')[0].classList.contains('d-none')){getFavorites()}
+    //if(getClasses('fav-link')[0].classList.contains('d-none')){renderFavorites()}
 }
 
 function saveDataLocally(){
@@ -264,20 +265,8 @@ function loadLocalData(){
     }
 }
 
-async function getFavorites() {
-    renderLoader();
-    pokemonDataSelection = [];
-    for (let i = 0; i < favorites.length; i++) {
-        await searchPokemon(favorites[i]);
-        extractData();
-    }
-    renderSearchResults();
-    // hide(getById('fav-link'));
-    hide(...(getClasses('fav-link')));
-}
-
 function toggleOverlay() {
-    toggleElement(getById('modal-overlay')); // zu viel des guten ???
+    toggleElement(getById('modal-overlay'));
     getElement('body').classList.toggle('no-scroll');
 }
 
